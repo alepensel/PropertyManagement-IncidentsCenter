@@ -1,0 +1,4143 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PropHero Centro de Incidencias</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+:root {
+  --blue: #2050f6;
+  --blue-dark: #1138d2;
+  --soft-blue: #f3f5fe;
+  --ink: #111827;
+  --muted: #657084;
+  --line: #dde3ee;
+  --panel: #ffffff;
+  --page: #f7f9fc;
+  --sidebar: #07111f;
+  --sidebar-2: #0c1a2e;
+  --danger: #e62f56;
+  --warning: #f45504;
+  --amber: #e8a400;
+  --success: #23b26d;
+  --pink: #ea4ac0;
+}
+
+svg {
+  display: block;
+}
+
+.icon-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.mobile-icon {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--page);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.45;
+  font-weight: 400;
+  letter-spacing: 0;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+}
+
+.sidebar {
+  min-height: 100vh;
+  background: linear-gradient(180deg, var(--sidebar), var(--sidebar-2));
+  color: #fff;
+  padding: 22px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2px;
+  padding: 4px 8px 14px;
+}
+
+.brand-logo {
+  width: 124px;
+  height: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+.side-nav b {
+  color: rgba(255, 255, 255, 0.66);
+}
+
+.side-nav {
+  display: grid;
+  gap: 6px;
+}
+
+.side-nav button,
+.sidebar-footer button {
+  border: 0;
+  color: rgba(255, 255, 255, 0.82);
+  background: transparent;
+  min-height: 42px;
+  border-radius: 8px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.side-nav button.active,
+.sidebar-footer button.active {
+  background: var(--blue);
+  color: #fff;
+}
+
+.side-nav button.active b,
+.sidebar-footer button.active b {
+  color: #fff;
+}
+
+.side-nav button.featured {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.side-nav button.featured.active {
+  background: #334155;
+  color: #fff;
+}
+
+.side-nav button.featured b {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+.side-nav button.total-featured {
+  background: #020617;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.side-nav button.total-featured b {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
+.side-nav button.total-featured.active {
+  background: #020617;
+  border-color: rgba(32, 80, 246, 0.9);
+  box-shadow: inset 3px 0 0 var(--blue);
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  display: grid;
+}
+
+.sidebar-footer button.app-access {
+  background: #fff;
+  color: #07111f;
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+.sidebar-footer button.app-access.active {
+  background: #fff;
+  color: #07111f;
+}
+
+.sidebar-footer button.app-access b,
+.sidebar-footer button.app-access.active b {
+  color: #07111f;
+  background: rgba(7, 17, 31, 0.08);
+}
+
+.side-nav b,
+.sidebar-footer b {
+  min-width: 28px;
+  padding: 4px 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.workspace {
+  min-width: 0;
+  min-height: 100vh;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+}
+
+.backoffice-view {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+}
+
+.backoffice-view[hidden],
+.mobile-app-view[hidden] {
+  display: none;
+}
+
+.topbar {
+  display: grid;
+  grid-template-columns: max-content minmax(520px, 1fr) max-content;
+  gap: 12px;
+  align-items: center;
+  background: #eaf3ff;
+  border: 1px solid #c9ddff;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 18px;
+}
+
+.top-title {
+  min-height: 40px;
+  border-radius: 8px;
+  background: var(--soft-blue);
+  color: var(--blue);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 0;
+  font-size: 28px;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+h2 {
+  font-size: 15px;
+  line-height: 1.25;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.search-tools {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 168px 168px;
+  gap: 8px;
+  align-items: center;
+  justify-self: start;
+  width: min(100%, 760px);
+}
+
+.search,
+.date-filter {
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 0 12px;
+}
+
+.date-filter {
+  grid-template-columns: auto minmax(0, 1fr);
+  padding: 0 12px;
+}
+
+.search span,
+.date-filter span {
+  font-size: 10px;
+  line-height: 1;
+  color: var(--muted);
+}
+
+.search input,
+.date-filter input {
+  font-size: 12px;
+  border: 0;
+  outline: 0;
+  min-width: 0;
+  width: 100%;
+  background: transparent;
+  color: var(--ink);
+}
+
+.search input::placeholder {
+  color: #7d8aa0;
+  font-size: 12px;
+}
+
+.date-filter input {
+  min-width: 112px;
+}
+
+.agent {
+  display: flex;
+  align-items: center;
+  justify-self: end;
+  gap: 10px;
+}
+
+.avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: var(--blue);
+  color: #fff;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.agent strong,
+.agent small {
+  display: block;
+  white-space: nowrap;
+}
+
+.agent strong {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.agent small {
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.agent small,
+.panel-head p,
+.entity-strip small,
+.timeline small,
+.ai-panel p,
+.ticket-copy small,
+.ticket-copy span,
+.ai-card span,
+.missing span,
+.recommendation span,
+.ai-grid span {
+  color: var(--muted);
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #dfe6f2;
+}
+
+.metrics article {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  display: grid;
+  gap: 8px;
+}
+
+.metrics article.metric-overdue {
+  background: #fff1f4;
+  border-color: rgba(230, 47, 86, 0.34);
+}
+
+.metrics span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.metrics strong {
+  font-size: 28px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.metrics small {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.metrics small.negative {
+  color: var(--danger);
+}
+
+.metrics small.warning {
+  color: var(--warning);
+}
+
+.metrics small.positive {
+  color: var(--success);
+}
+
+.command-grid {
+  flex: none;
+  min-height: calc(100vh - 290px);
+  height: calc(100vh - 290px);
+  display: grid;
+  grid-template-columns: 300px minmax(480px, 1fr) 300px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.inbox-panel,
+.detail-panel,
+.ai-panel {
+  min-width: 0;
+  min-height: 0;
+}
+
+.inbox-panel {
+  background: #f3f5f8;
+  border-right: 1px solid #d5dce8;
+  padding: 16px;
+  overflow: auto;
+}
+
+.detail-panel {
+  background: #fff;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.ai-panel {
+  background: #fbfcff;
+  border-left: 1px solid var(--line);
+  padding: 18px;
+  overflow: auto;
+}
+
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.panel-head p {
+  font-size: 12px;
+  margin-bottom: 0;
+}
+
+select {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  height: 34px;
+  padding: 0 10px;
+  color: var(--ink);
+}
+
+.queue-label {
+  margin: 16px 0 8px;
+  color: var(--danger);
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.queue-label.inside {
+  color: var(--blue);
+  margin-top: 18px;
+}
+
+.ticket-list {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.ticket-list.compact .ticket-row {
+  background: #fff;
+}
+
+.ticket-row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  text-align: left;
+}
+
+.ticket-row.selected {
+  border-color: var(--blue);
+  background: var(--soft-blue);
+}
+
+.ticket-row.sla-overdue {
+  border-color: rgba(230, 47, 86, 0.34);
+  background: #fff1f4;
+}
+
+.ticket-row.sla-overdue.selected {
+  border-color: var(--danger);
+  background: #ffe6eb;
+  box-shadow: 0 0 0 1px rgba(230, 47, 86, 0.16);
+}
+
+.channel {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.channel.email {
+  background: #fff;
+}
+
+.channel.hubspot {
+  background: #fff1e8;
+}
+
+.channel.app {
+  background: #eef2ff;
+}
+
+.channel.whatsapp {
+  background: #e8f5ee;
+}
+
+.channel img,
+.channel-icon {
+  width: 22px;
+  height: 22px;
+  display: block;
+  object-fit: contain;
+}
+
+.ticket-copy {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.ticket-copy strong,
+.ticket-copy span,
+.ticket-copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ticket-copy strong {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.ticket-copy span,
+.ticket-copy small {
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.ticket-meta {
+  display: grid;
+  justify-items: end;
+  gap: 8px;
+}
+
+.ticket-meta strong {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.ticket-meta strong.overdue-time {
+  color: var(--danger);
+}
+
+.ticket-meta strong.remaining-time {
+  color: var(--warning);
+}
+
+.priority {
+  border-radius: 6px;
+  padding: 4px 7px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.p1 {
+  background: #ffe8ee;
+  color: var(--danger);
+}
+
+.p2 {
+  background: #fff0e8;
+  color: var(--warning);
+}
+
+.p3 {
+  background: #fff8df;
+  color: #9b7100;
+}
+
+.p4 {
+  background: #edf2ff;
+  color: var(--blue);
+}
+
+.ticket-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: start;
+}
+
+.ticket-id-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.ticket-id {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 0;
+}
+
+.detail-priority {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
+
+.sla-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  border-radius: 999px;
+  padding: 0 9px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.sla-chip.overdue {
+  background: #ffe8ee;
+  color: var(--danger);
+}
+
+.sla-chip.ok {
+  background: #e8f5ee;
+  color: var(--success);
+}
+
+.title-sla {
+  color: var(--danger);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ticket-actions h2 {
+  font-size: 22px;
+  line-height: 1.2;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.action-row {
+  display: flex;
+  gap: 8px;
+}
+
+.primary,
+.ghost {
+  min-height: 38px;
+  border-radius: 8px;
+  padding: 0 14px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.primary {
+  border: 1px solid var(--blue);
+  background: var(--blue);
+  color: #fff;
+}
+
+.primary:hover {
+  background: var(--blue-dark);
+}
+
+.ghost {
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--blue);
+}
+
+.assigned-lock {
+  min-height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #eef2f6;
+  color: var(--muted);
+  padding: 0 14px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: not-allowed;
+}
+
+.full {
+  width: 100%;
+}
+
+.entity-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin-bottom: 14px;
+}
+
+.entity-strip > div {
+  position: relative;
+  padding: 14px;
+  border-right: 1px solid var(--line);
+  display: grid;
+  gap: 5px;
+}
+
+.entity-strip > div:last-child {
+  border-right: 0;
+}
+
+.entity-strip span,
+.state-row label {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.entity-strip strong {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.entity-strip small {
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.entity-strip strong,
+.entity-strip small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.entity-trigger {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  padding: 0 20px 0 0;
+  background: transparent;
+  color: var(--ink);
+  display: grid;
+  gap: 4px;
+  position: relative;
+  text-align: left;
+}
+
+.entity-trigger:hover strong,
+.entity-trigger:focus strong {
+  color: var(--blue);
+}
+
+.entity-trigger i {
+  position: absolute;
+  top: 4px;
+  right: 0;
+  width: 14px;
+  height: 14px;
+}
+
+.entity-trigger i::before {
+  content: "";
+  position: absolute;
+  inset: 3px 2px 4px;
+  border-right: 2px solid #8b97aa;
+  border-bottom: 2px solid #8b97aa;
+  transform: rotate(45deg);
+}
+
+.entity-options {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% - 4px);
+  left: 10px;
+  right: 10px;
+  display: none;
+  max-height: 220px;
+  overflow: auto;
+  padding: 6px;
+  border: 1px solid #c9d5e6;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.14);
+}
+
+.entity-options.open {
+  display: grid;
+  gap: 4px;
+}
+
+.entity-option {
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  padding: 8px;
+  display: grid;
+  gap: 3px;
+  text-align: left;
+  color: var(--ink);
+}
+
+.entity-option:hover,
+.entity-option:focus {
+  background: #eef4ff;
+  outline: 0;
+}
+
+.entity-option strong {
+  font-size: 12px;
+}
+
+.entity-option small {
+  color: var(--muted);
+}
+
+.entity-option-empty {
+  padding: 10px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.channel-detail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.channel-detail .channel-icon {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  border-radius: 6px;
+  object-fit: contain;
+}
+
+.channel-detail b {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.state-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.state-row label {
+  display: grid;
+  gap: 7px;
+}
+
+.state-row select,
+.state-row input,
+.state-row strong {
+  min-height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  font-size: 13px;
+}
+
+.state-row input {
+  width: 100%;
+  outline: 0;
+}
+
+.tabs {
+  display: flex;
+  gap: 24px;
+  border-bottom: 1px solid var(--line);
+  margin: 14px 0 0;
+}
+
+.tabs button {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  padding: 12px 0;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.tabs .active {
+  color: var(--blue);
+  box-shadow: inset 0 -3px 0 var(--blue);
+}
+
+.timeline {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  padding: 18px 0;
+  flex: 1;
+  min-height: 220px;
+  max-height: none;
+  overflow: auto;
+}
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: var(--soft-blue);
+  color: var(--blue);
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.timeline-item > div {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  background: #fff;
+  align-self: start;
+}
+
+.timeline-item.prophero-message > div {
+  border-color: #c9ddff;
+  background: #eaf3ff;
+}
+
+.timeline-item.prophero-message .dot {
+  background: var(--blue);
+  color: #fff;
+}
+
+.timeline-item.prophero-message .dot.ai-dot {
+  background: #fff;
+  border: 1px solid #c9ddff;
+  color: transparent;
+  overflow: hidden;
+}
+
+.dot.ai-dot img {
+  width: 28px;
+  height: 28px;
+  display: block;
+  object-fit: contain;
+}
+
+.timeline-item.requester-message .dot {
+  background: #f1f5f9;
+  color: var(--ink);
+}
+
+.timeline header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.timeline header strong {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.timeline header small {
+  font-size: 11px;
+}
+
+.timeline p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.attachment-thumb {
+  width: 136px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  padding: 6px;
+  display: grid;
+  gap: 5px;
+  text-align: left;
+}
+
+.attachment-preview {
+  height: 68px;
+  border-radius: 6px;
+  background:
+    linear-gradient(135deg, rgba(17, 24, 39, 0.08), rgba(32, 80, 246, 0.18)),
+    linear-gradient(45deg, #d7e4f7 25%, transparent 25% 50%, #eaf3ff 50% 75%, transparent 75%);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.attachment-thumb.video .attachment-preview {
+  background:
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.92) 0 16px, transparent 17px),
+    linear-gradient(135deg, #0f172a, #2050f6);
+  background-size: auto;
+}
+
+.attachment-thumb strong,
+.attachment-thumb small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.attachment-thumb strong {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.attachment-thumb small {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.reply-box {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+
+.reply-box input {
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+.reply-box button {
+  border: 0;
+  background: var(--blue);
+  color: #fff;
+  border-radius: 8px;
+  padding: 0 16px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.ai-head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.ai-head p {
+  margin-bottom: 0;
+  font-size: 11px;
+}
+
+.beta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 18px;
+  border-radius: 999px;
+  padding: 0 7px;
+  margin-left: 5px;
+  background: var(--soft-blue);
+  color: var(--blue);
+  font-size: 10px;
+  font-weight: 700;
+  vertical-align: middle;
+}
+
+#confidence {
+  width: 54px;
+  height: 54px;
+  border: 4px solid var(--blue);
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  color: var(--blue);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.ai-card,
+.ai-grid div,
+.recommendation {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  padding: 14px;
+}
+
+.ai-card {
+  margin-bottom: 12px;
+}
+
+.ai-card span,
+.missing span,
+.recommendation span,
+.ai-grid span {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.ai-card p,
+.recommendation p {
+  margin-bottom: 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.ai-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.ai-grid strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.ai-grid small {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.missing {
+  margin: 14px 0;
+}
+
+.missing ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.recommendation {
+  margin-bottom: 14px;
+  background: linear-gradient(180deg, #fff, var(--soft-blue));
+}
+
+.ai-panel .primary,
+.ai-panel .ghost,
+.inbox-panel .ghost {
+  margin-top: 8px;
+}
+
+.ai-footer {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.empty {
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  padding: 18px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.toast {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  background: #07111f;
+  color: #fff;
+  padding: 12px 16px;
+  border-radius: 8px;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: 180ms ease;
+  font-weight: 700;
+  max-width: 340px;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mobile-app-view {
+  flex: 1;
+  min-height: calc(100vh - 44px);
+  display: grid;
+  place-items: start center;
+  padding: 8px 0 28px;
+}
+
+.mobile-stage {
+  width: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.phone-shell {
+  position: relative;
+  width: min(390px, 100%);
+  height: min(844px, calc(100vh - 64px));
+  min-height: 720px;
+  overflow: hidden;
+  border: 1px solid #d9e2ee;
+  border-radius: 34px;
+  background: #f5f6f8;
+  box-shadow: 0 28px 70px rgba(7, 17, 31, 0.18);
+}
+
+.mobile-screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+  background: #f5f6f8;
+  overflow: hidden;
+}
+
+.mobile-screen.active {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-header {
+  flex: 0 0 auto;
+  min-height: 78px;
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: end;
+  gap: 12px;
+  padding: 18px 18px 12px;
+  border-bottom: 1px solid #e3e7ee;
+}
+
+.mobile-header img {
+  width: 112px;
+  justify-self: center;
+}
+
+.hamburger {
+  width: 34px;
+  height: 34px;
+  border: 0;
+  background: transparent;
+  display: grid;
+  align-content: center;
+  gap: 5px;
+  padding: 0 6px;
+}
+
+.hamburger span {
+  height: 2.5px;
+  border-radius: 99px;
+  background: #111827;
+}
+
+.mobile-backbar {
+  flex: 0 0 auto;
+  height: 72px;
+  display: flex;
+  align-items: end;
+  padding: 0 20px 12px;
+}
+
+.mobile-backbar button {
+  width: 34px;
+  height: 34px;
+  border: 0;
+  background: transparent;
+  position: relative;
+}
+
+.mobile-backbar button::before {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  left: 8px;
+  top: 8px;
+  border-left: 5px solid #405063;
+  border-bottom: 5px solid #405063;
+  transform: rotate(45deg);
+  border-radius: 2px;
+}
+
+.mobile-content {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 0 18px 88px;
+  scrollbar-width: none;
+}
+
+.mobile-content::-webkit-scrollbar {
+  display: none;
+}
+
+.mobile-content h1 {
+  margin: 0 0 12px;
+  color: #162231;
+  font-size: 24px;
+  line-height: 1.06;
+  font-weight: 700;
+}
+
+.mobile-tabs {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 4px;
+  overflow: hidden;
+  padding: 12px 14px 18px;
+}
+
+.mobile-tabs button {
+  min-width: 0;
+  height: 38px;
+  border: 0;
+  border-radius: 24px;
+  padding: 0 4px;
+  background: transparent;
+  color: #566475;
+  font-size: 11px;
+  line-height: 1.05;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.mobile-tabs button.active {
+  background: #fff;
+  color: #243447;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+}
+
+.portfolio-card,
+.support-card,
+.success-card,
+.account-group {
+  background: #fff;
+  border: 1px solid #eef1f6;
+  border-radius: 22px;
+  box-shadow: 0 1px 0 rgba(15, 23, 42, 0.02);
+}
+
+.portfolio-card {
+  min-height: 118px;
+  padding: 16px 18px;
+  display: grid;
+  gap: 10px;
+}
+
+.portfolio-card span {
+  color: #a8b2c0;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.portfolio-card strong {
+  color: #000;
+  font-size: 31px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.portfolio-card small {
+  color: #506071;
+  font-size: 12px;
+}
+
+.opportunities {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: start;
+  margin-top: 22px;
+}
+
+.opportunities h2 {
+  color: #162231;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.opportunities p {
+  margin-bottom: 0;
+  color: #566475;
+  font-size: 12px;
+  line-height: 1.25;
+  max-width: 230px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.opportunities button {
+  border: 0;
+  background: transparent;
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.property-strip {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(290px, 86%);
+  gap: 14px;
+  margin: 16px -18px 0;
+  padding: 0 18px 8px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.property-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.property-card {
+  overflow: hidden;
+  scroll-snap-align: start;
+  border-radius: 18px;
+  background: #fff;
+  border: 1px solid #eef1f6;
+  box-shadow: 0 1px 0 rgba(15, 23, 42, 0.02);
+}
+
+.property-photo {
+  height: 118px;
+  background:
+    linear-gradient(180deg, rgba(17, 24, 39, 0.02), rgba(17, 24, 39, 0.08)),
+    url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80");
+  background-position: center 58%;
+  background-size: cover;
+}
+
+.property-photo-b {
+  background-image:
+    linear-gradient(180deg, rgba(17, 24, 39, 0.02), rgba(17, 24, 39, 0.08)),
+    url("https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=80");
+  background-position: center;
+}
+
+.property-photo-c {
+  background-image:
+    linear-gradient(180deg, rgba(17, 24, 39, 0.02), rgba(17, 24, 39, 0.08)),
+    url("https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=900&q=80");
+  background-position: center 52%;
+}
+
+.property-card-body {
+  display: grid;
+  gap: 7px;
+  padding: 12px 14px 14px;
+}
+
+.property-card-body strong {
+  color: #111827;
+  font-size: 27px;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.property-card-body span {
+  color: #566475;
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.property-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.property-tags small {
+  min-height: 26px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0 10px;
+  background: #f1f5f9;
+  color: #566475;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.property-tags small:first-child {
+  background: #eef2ff;
+  color: var(--blue);
+}
+
+.account-content {
+  padding-top: 36px;
+}
+
+.account-content h1 {
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.account-group {
+  display: grid;
+  gap: 0;
+  padding: 10px 0;
+  margin-bottom: 14px;
+}
+
+.account-group button {
+  min-height: 52px;
+  border: 0;
+  background: transparent;
+  color: #405063;
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  align-items: center;
+  gap: 10px;
+  padding: 0 18px;
+  text-align: left;
+  font-size: 17px;
+  font-weight: 400;
+}
+
+.account-group .mobile-icon {
+  width: 25px;
+  height: 25px;
+  color: var(--blue);
+}
+
+.account-group .contact-entry {
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  min-height: 56px;
+  margin: 4px 8px;
+  padding: 0 10px;
+  border: 1px solid #bed2ff;
+  border-radius: 16px;
+  background: #edf4ff;
+  color: #16315f;
+  font-weight: 600;
+}
+
+.account-group .contact-entry::after {
+  content: "Nuevo";
+  justify-self: end;
+  grid-column: 3;
+  grid-row: 1;
+  align-self: center;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--blue);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.contact-content h1,
+.ticket-form h1,
+.success-content h1 {
+  font-size: 27px;
+  margin-bottom: 16px;
+}
+
+.support-card {
+  padding: 18px;
+  margin-bottom: 14px;
+}
+
+.consultation-card {
+  display: grid;
+  gap: 10px;
+}
+
+.action-card {
+  padding-bottom: 16px;
+}
+
+.support-card h2 {
+  color: #405063;
+  font-size: 17px;
+  margin-bottom: 10px;
+}
+
+.support-card p,
+.form-intro,
+.success-content p {
+  color: #506071;
+  font-size: 13px;
+  line-height: 1.38;
+  margin-bottom: 14px;
+}
+
+.support-card.slim p {
+  margin-bottom: 0;
+}
+
+.support-card strong {
+  color: var(--blue);
+}
+
+.mobile-consultations {
+  display: grid;
+  gap: 8px;
+}
+
+.mobile-consultation {
+  min-height: 54px;
+  border: 1px solid #e1e7f0;
+  border-radius: 14px;
+  background: #f8fafc;
+  color: #162231;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  text-align: left;
+}
+
+.mobile-consultation span {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.mobile-consultation strong {
+  overflow: hidden;
+  color: #162231;
+  font-size: 12px;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mobile-consultation small {
+  overflow: hidden;
+  color: #657084;
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mobile-consultation b {
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.mobile-empty {
+  border: 1px dashed #d7dee9;
+  border-radius: 14px;
+  color: #657084;
+  padding: 12px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.mobile-primary,
+.mobile-secondary {
+  width: 100%;
+  min-height: 44px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.mobile-primary {
+  border: 0;
+  background: var(--blue);
+  color: #fff;
+}
+
+.mobile-secondary {
+  margin-top: 12px;
+  border: 1px solid #d9e2ee;
+  background: #fff;
+  color: var(--blue);
+}
+
+.ticket-form {
+  display: grid;
+  gap: 9px;
+}
+
+.ticket-form label {
+  display: grid;
+  gap: 6px;
+  color: #405063;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.locked-requester {
+  display: grid;
+  gap: 4px;
+  padding: 8px 12px;
+  border: 1px solid #dce3ed;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.locked-requester span {
+  color: #405063;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.locked-requester strong {
+  color: #162231;
+  font-size: 13px;
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+.locked-requester small {
+  color: #7d8aa0;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.mobile-field-control {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 6px 12px;
+  border: 1px solid #dce3ed;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.mobile-field-control small {
+  color: #7d8aa0;
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.ticket-form input,
+.ticket-form select,
+.ticket-form textarea {
+  width: 100%;
+  border: 1px solid #dce3ed;
+  border-radius: 14px;
+  background: #fff;
+  color: #162231;
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+.ticket-form input,
+.ticket-form select {
+  min-height: 38px;
+}
+
+.ticket-form textarea {
+  min-height: 76px;
+  padding-top: 10px;
+  resize: none;
+}
+
+.ticket-form .mobile-field-control select {
+  min-height: 24px;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ticket-form small,
+.mobile-attachments small {
+  color: #7d8aa0;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.mobile-attachments {
+  display: grid;
+  gap: 7px;
+  padding: 10px;
+  border: 1px dashed #ccd6e5;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.mobile-attachments span {
+  color: #405063;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.mobile-attachments div {
+  display: flex;
+  gap: 10px;
+}
+
+.attachment-toggle {
+  min-height: 32px;
+  border: 1px solid #dce3ed;
+  border-radius: 12px;
+  background: #f8fafc;
+  color: #405063;
+  padding: 0 14px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.attachment-toggle.selected {
+  border-color: var(--blue);
+  background: var(--soft-blue);
+  color: var(--blue);
+}
+
+.success-content {
+  min-height: 100%;
+  display: grid;
+  align-content: center;
+}
+
+.success-mark {
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  background: var(--blue);
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.success-mark::before {
+  content: "";
+  position: absolute;
+  width: 28px;
+  height: 15px;
+  left: 18px;
+  top: 22px;
+  border-left: 5px solid #fff;
+  border-bottom: 5px solid #fff;
+  transform: rotate(-45deg);
+}
+
+.success-card {
+  display: grid;
+  gap: 6px;
+  padding: 18px;
+  margin: 8px 0 20px;
+}
+
+.success-card span,
+.success-card small {
+  color: #657084;
+}
+
+.success-card strong {
+  font-size: 19px;
+  color: #162231;
+}
+
+.mobile-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  min-height: 72px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  align-items: center;
+  padding: 7px 12px 10px;
+  background: rgba(245, 246, 248, 0.96);
+  border-top: 1px solid #e5e9f0;
+}
+
+.mobile-bottom button {
+  border: 0;
+  background: transparent;
+  color: #5f7080;
+  font-size: 11px;
+  font-weight: 500;
+  display: grid;
+  grid-template-rows: 27px auto;
+  gap: 4px;
+  place-items: center;
+  position: relative;
+  line-height: 1.1;
+}
+
+.mobile-bottom button::before,
+.mobile-bottom button::after {
+  content: none;
+}
+
+.mobile-bottom .mobile-icon {
+  width: 26px;
+  height: 26px;
+  stroke-width: 1.75;
+}
+
+.mobile-bottom button.active {
+  color: var(--blue);
+  font-weight: 700;
+}
+
+@media (max-width: 1180px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    min-height: auto;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+
+  .side-nav {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .topbar {
+    grid-template-columns: 1fr;
+  }
+
+  .search-tools {
+    justify-self: stretch;
+    width: 100%;
+  }
+
+  .command-grid {
+    grid-template-columns: 280px minmax(460px, 1fr);
+  }
+
+  .ai-panel {
+    grid-column: 1 / -1;
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+}
+
+@media (max-width: 820px) {
+  .workspace {
+    padding: 14px;
+  }
+
+  .topbar,
+  .metrics,
+  .command-grid,
+  .entity-strip,
+  .state-row {
+    grid-template-columns: 1fr;
+  }
+
+  .command-grid {
+    min-height: auto;
+  }
+
+  .inbox-panel,
+  .ai-panel {
+    border: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .entity-strip > div {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .entity-strip > div:last-child {
+    border-bottom: 0;
+  }
+
+  .side-nav {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .search-tools {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .search {
+    grid-column: 1 / -1;
+  }
+}
+
+    </style>
+  </head>
+  <body>
+    <svg class="icon-sprite" aria-hidden="true">
+      <symbol id="icon-home" viewBox="0 0 24 24">
+        <path d="M4 10.5 12 4l8 6.5" />
+        <path d="M6.5 10v8.5h11V10" />
+        <path d="M9.5 18.5v-5h5v5" />
+      </symbol>
+      <symbol id="icon-search" viewBox="0 0 24 24">
+        <circle cx="10.8" cy="10.8" r="5.8" />
+        <path d="m15.2 15.2 4.3 4.3" />
+      </symbol>
+      <symbol id="icon-advisor" viewBox="0 0 24 24">
+        <path d="M5 6.8c0-1.2 1-2.2 2.2-2.2h9.6c1.2 0 2.2 1 2.2 2.2v6.4c0 1.2-1 2.2-2.2 2.2h-4.2L8.4 19v-3.6H7.2c-1.2 0-2.2-1-2.2-2.2Z" />
+        <path d="m12 7.4.6 1.4 1.4.6-1.4.6-.6 1.4-.6-1.4-1.4-.6 1.4-.6Z" />
+      </symbol>
+      <symbol id="icon-list" viewBox="0 0 24 24">
+        <path d="M6 5.5h12" />
+        <path d="M6 12h12" />
+        <path d="M6 18.5h12" />
+        <path d="m3.8 5.5.8.8 1.4-1.6" />
+        <path d="m3.8 12 .8.8 1.4-1.6" />
+        <path d="m3.8 18.5.8.8 1.4-1.6" />
+      </symbol>
+      <symbol id="icon-panel" viewBox="0 0 24 24">
+        <path d="M4.5 18.5V5.5" />
+        <path d="M4.5 18.5h15" />
+        <path d="m7.2 15 3.4-3.8 3 2.4 4.5-6" />
+        <path d="M16.2 7.6h1.9v1.9" />
+      </symbol>
+      <symbol id="icon-user" viewBox="0 0 24 24">
+        <circle cx="12" cy="8" r="3.8" />
+        <path d="M5.5 19c1-3 3.2-4.6 6.5-4.6s5.5 1.6 6.5 4.6" />
+      </symbol>
+      <symbol id="icon-globe" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="8" />
+        <path d="M4.5 12h15" />
+        <path d="M12 4c2 2.2 3 4.9 3 8s-1 5.8-3 8" />
+        <path d="M12 4c-2 2.2-3 4.9-3 8s1 5.8 3 8" />
+      </symbol>
+      <symbol id="icon-coin" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="8" />
+        <path d="M12 7.5v9" />
+        <path d="M14.5 9.2c-.6-.8-1.5-1.1-2.5-1.1-1.4 0-2.4.7-2.4 1.8 0 2.7 5 1.2 5 4.1 0 1.1-1 1.9-2.6 1.9-1.2 0-2.2-.4-2.9-1.3" />
+      </symbol>
+      <symbol id="icon-chat" viewBox="0 0 24 24">
+        <path d="M5 6.7c0-1.3 1-2.3 2.3-2.3h9.4c1.3 0 2.3 1 2.3 2.3v5.8c0 1.3-1 2.3-2.3 2.3h-4.1L8.1 19v-4.2h-.8c-1.3 0-2.3-1-2.3-2.3Z" />
+        <path d="M8.5 9.5h.1" />
+        <path d="M12 9.5h.1" />
+        <path d="M15.5 9.5h.1" />
+      </symbol>
+      <symbol id="icon-help" viewBox="0 0 24 24">
+        <path d="M6.5 5.5h11v13h-11z" />
+        <path d="M10 9.2c.3-1 1.1-1.6 2.2-1.6 1.3 0 2.2.8 2.2 2 0 1.6-1.7 1.8-2.1 3.1" />
+        <path d="M12 16h.1" />
+      </symbol>
+      <symbol id="icon-invite" viewBox="0 0 24 24">
+        <circle cx="9.5" cy="8.2" r="3.2" />
+        <path d="M4.2 18c.8-2.8 2.6-4.2 5.3-4.2 1.2 0 2.2.3 3 .9" />
+        <path d="M17.4 11.8c1.4 0 2.5 1 2.5 2.4 0 2.8-4 4.7-4 4.7s-4-1.9-4-4.7c0-1.4 1.1-2.4 2.5-2.4.7 0 1.2.3 1.5.8.3-.5.8-.8 1.5-.8Z" />
+      </symbol>
+    </svg>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22480%22%20height%3D%22140%22%20viewBox%3D%220%200%20480%20140%22%3E%3Crect%20width%3D%22480%22%20height%3D%22140%22%20fill%3D%22none%22%2F%3E%3Cg%20fill%3D%22%23fff%22%3E%3Ccircle%20cx%3D%2266%22%20cy%3D%2270%22%20r%3D%2238%22%2F%3E%3Cpath%20d%3D%22M121%2047h18v46h-18zM151%2047h57c22%200%2036%2013%2036%2032s-14%2032-36%2032h-39v29h-18zm18%2016v32h36c13%200%2021-6%2021-16s-8-16-21-16zm93-16h18v93h-18zm37%200h67v16h-49v21h43v16h-43v24h51v16h-69zm93%200h18v37h45V47h18v93h-18v-40h-45v40h-18z%22%2F%3E%3C%2Fg%3E%3Ctext%20x%3D%22116%22%20y%3D%2296%22%20fill%3D%22%23fff%22%20font-family%3D%22Inter%2C%20Arial%22%20font-size%3D%2246%22%20font-weight%3D%22700%22%3EPropHero%3C%2Ftext%3E%3C%2Fsvg%3E" alt="PropHero" class="brand-logo" />
+        </div>
+
+        <nav class="side-nav" aria-label="Navegacion principal">
+          <button class="active featured" data-filter="mine"><span>Asignadas a mi</span><b id="navMine">2</b></button>
+          <button class="total-featured" data-filter="total"><span>Incidencias totales</span><b id="navAll">7</b></button>
+          <button data-filter="new"><span>Nuevo</span><b id="navNew">0</b></button>
+          <button data-filter="assigned"><span>Abierto/Asignado</span><b id="navAssigned">0</b></button>
+          <button data-filter="progress"><span>En progreso</span><b id="navProgress">0</b></button>
+          <button data-filter="pending"><span>Pendiente / En espera</span><b id="navPending">0</b></button>
+          <button data-filter="resolved"><span>Resuelto</span><b id="navResolved">1</b></button>
+          <button data-filter="closed"><span>Cerrado</span><b id="navClosed">0</b></button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <button class="app-access" type="button" data-view="mobile-app"><span>App usuario</span><b>Demo</b></button>
+        </div>
+
+      </aside>
+
+      <main class="workspace">
+        <section id="backofficeView" class="backoffice-view">
+        <header class="topbar">
+          <div class="top-title">Centro de Incidencias</div>
+          <div class="search-tools" aria-label="Busqueda y fechas">
+            <label class="search">
+              <span>Buscar</span>
+              <input id="searchInput" type="search" placeholder="Tickets, propiedades, personas..." />
+            </label>
+            <label class="date-filter">
+              <span>Desde</span>
+              <input id="dateFrom" type="date" />
+            </label>
+            <label class="date-filter">
+              <span>Hasta</span>
+              <input id="dateTo" type="date" />
+            </label>
+          </div>
+          <div class="agent">
+            <span class="avatar">MG</span>
+            <div>
+              <strong>Maria Gonzalez</strong>
+              <small>Analista CX</small>
+            </div>
+          </div>
+        </header>
+
+        <section class="metrics" aria-label="Metricas operativas">
+          <article><span>Tickets abiertos</span><strong id="metricOpen">7</strong><small id="metricOpenNote" class="negative">+2 vs ayer</small></article>
+          <article><span>P1 criticos</span><strong id="metricP1">2</strong><small id="metricP1Note" class="negative">1 vencido</small></article>
+          <article><span>P2 altos</span><strong id="metricP2">2</strong><small id="metricP2Note" class="warning">1 por vencer</small></article>
+          <article><span>P3 medios</span><strong id="metricP3">2</strong><small id="metricP3Note">Dentro de SLA</small></article>
+          <article><span>P4 bajos</span><strong id="metricP4">1</strong><small id="metricP4Note">Dentro de SLA</small></article>
+        </section>
+
+        <section class="command-grid">
+          <section class="inbox-panel">
+            <div class="panel-head">
+              <div>
+                <h2>Inbox omnicanal</h2>
+              </div>
+              <select id="priorityFilter" aria-label="Filtrar por prioridad">
+                <option value="all">Todas</option>
+                <option value="P1">P1</option>
+                <option value="P2">P2</option>
+                <option value="P3">P3</option>
+                <option value="P4">P4</option>
+              </select>
+            </div>
+            <div class="queue-label">SLA en riesgo</div>
+            <div id="ticketList" class="ticket-list"></div>
+            <div class="queue-label inside">Dentro de SLA</div>
+            <div id="withinSlaList" class="ticket-list compact"></div>
+          </section>
+
+          <section class="detail-panel">
+            <div class="ticket-actions">
+              <div>
+                <div class="ticket-id-row">
+                  <p id="ticketId" class="ticket-id"></p>
+                  <span id="ticketPriorityChip" class="priority p1"></span>
+                  <span id="ticketSlaChip" class="sla-chip"></span>
+                  <small id="titleSla" class="title-sla"></small>
+                </div>
+                <h2 id="ticketTitle"></h2>
+              </div>
+              <div class="action-row">
+                <button id="assignToMeBtn" class="primary" type="button">Asignarme ticket</button>
+              </div>
+            </div>
+
+            <div class="entity-strip">
+              <div><span>Canal</span><strong class="channel-detail"><img id="sourceChannelIcon" alt="" /><b id="sourceChannel"></b></strong><small id="createdAt"></small></div>
+              <div class="entity-picker">
+                <span>Solicitante</span>
+                <button id="requesterTrigger" class="entity-trigger" type="button" data-type="requester">
+                  <strong id="requesterName"></strong>
+                  <small id="requesterRole"></small>
+                  <i aria-hidden="true"></i>
+                </button>
+                <div id="requesterOptions" class="entity-options"></div>
+              </div>
+              <div class="entity-picker">
+                <span>Propiedad</span>
+                <button id="propertyTrigger" class="entity-trigger" type="button" data-type="property">
+                  <strong id="propertyName"></strong>
+                  <small id="propertyId"></small>
+                  <i aria-hidden="true"></i>
+                </button>
+                <div id="propertyOptions" class="entity-options"></div>
+              </div>
+              <div class="entity-picker">
+                <span>Contrato</span>
+                <button id="contractTrigger" class="entity-trigger" type="button" data-type="contract">
+                  <strong id="contractType"></strong>
+                  <small id="contractId"></small>
+                  <i aria-hidden="true"></i>
+                </button>
+                <div id="contractOptions" class="entity-options"></div>
+              </div>
+            </div>
+
+            <div class="state-row">
+              <label>Estado
+                <select id="statusSelect"></select>
+              </label>
+              <label>Asignado a
+                <select id="assigneeSelect"></select>
+              </label>
+              <label>Prioridad
+                <select id="prioritySelect"></select>
+              </label>
+              <label>Categoria
+                <select id="categorySelect"></select>
+              </label>
+            </div>
+
+            <div class="tabs">
+              <button class="active">Actividad</button>
+            </div>
+
+            <div id="timeline" class="timeline"></div>
+
+            <form id="replyForm" class="reply-box">
+              <input id="replyInput" placeholder="Escribe una respuesta..." />
+              <button type="submit">Enviar</button>
+            </form>
+          </section>
+
+          <aside class="ai-panel">
+            <div class="ai-head">
+              <div>
+                <h2>Copiloto IA <span class="beta">BETA</span></h2>
+                <p>Asistencia, no automatizacion opaca</p>
+              </div>
+              <span id="confidence">92%</span>
+            </div>
+
+            <div class="ai-card">
+              <span>Resumen generado</span>
+              <p id="aiSummary"></p>
+            </div>
+
+            <div class="ai-grid">
+              <div><span>Categoria sugerida</span><strong id="aiCategory"></strong></div>
+              <div><span>Prioridad sugerida</span><strong id="aiPriority"></strong><small id="aiSeverityCopy"></small></div>
+            </div>
+
+            <div class="missing">
+              <span>Informacion faltante</span>
+              <ul id="missingList"></ul>
+            </div>
+
+            <div class="recommendation">
+              <span>Proxima accion recomendada</span>
+              <p id="nextAction"></p>
+            </div>
+
+            <p class="ai-footer">Panel de asistencia · Requiere revision humana</p>
+          </aside>
+        </section>
+        </section>
+
+        <section id="mobileAppView" class="mobile-app-view" hidden>
+          <div class="mobile-stage">
+            <div class="phone-shell" aria-label="Prototipo app PropHero">
+              <section class="mobile-screen active" data-mobile-screen="home">
+                <header class="mobile-header">
+                  <button class="hamburger" type="button" data-mobile-target="account" aria-label="Abrir menu"><span></span><span></span><span></span></button>
+                  <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22480%22%20height%3D%22140%22%20viewBox%3D%220%200%20480%20140%22%3E%3Crect%20width%3D%22480%22%20height%3D%22140%22%20fill%3D%22none%22%2F%3E%3Cg%20fill%3D%22%23fff%22%3E%3Ccircle%20cx%3D%2266%22%20cy%3D%2270%22%20r%3D%2238%22%2F%3E%3Cpath%20d%3D%22M121%2047h18v46h-18zM151%2047h57c22%200%2036%2013%2036%2032s-14%2032-36%2032h-39v29h-18zm18%2016v32h36c13%200%2021-6%2021-16s-8-16-21-16zm93-16h18v93h-18zm37%200h67v16h-49v21h43v16h-43v24h51v16h-69zm93%200h18v37h45V47h18v93h-18v-40h-45v40h-18z%22%2F%3E%3C%2Fg%3E%3Ctext%20x%3D%22116%22%20y%3D%2296%22%20fill%3D%22%23fff%22%20font-family%3D%22Inter%2C%20Arial%22%20font-size%3D%2246%22%20font-weight%3D%22700%22%3EPropHero%3C%2Ftext%3E%3C%2Fsvg%3E" alt="PropHero" />
+                </header>
+                <nav class="mobile-tabs" aria-label="Secciones app">
+                  <button class="active" type="button">Para mi</button>
+                  <button type="button">Casos de exito</button>
+                  <button type="button">Herramientas</button>
+                  <button type="button">Recursos</button>
+                </nav>
+                <main class="mobile-content">
+                  <h1>Tu patrimonio inmobiliario</h1>
+                  <article class="portfolio-card">
+                    <span>Valor de la cartera</span>
+                    <strong>470.427 $</strong>
+                    <small>1 propiedad · 1 pais</small>
+                  </article>
+                  <section class="opportunities">
+                    <div>
+                      <h2>Oportunidades</h2>
+                      <p>Propiedades seleccionadas con Data+AI y aprobadas por nuestros expertos inmobiliarios</p>
+                    </div>
+                    <button type="button">Ver todo</button>
+                  </section>
+                  <section class="property-strip" aria-label="Propiedades destacadas">
+                    <article class="property-card">
+                      <div class="property-photo property-photo-a"></div>
+                      <div class="property-card-body">
+                        <strong>80.000 €</strong>
+                        <span>Valencia · 1 cama · 1 baño · 68 m2</span>
+                        <div class="property-tags">
+                          <small>Exclusivo PropHero</small>
+                          <small>Alquiler: 520 € pm</small>
+                          <small>Rentabilidad neta: 6.7%</small>
+                        </div>
+                      </div>
+                    </article>
+                    <article class="property-card">
+                      <div class="property-photo property-photo-b"></div>
+                      <div class="property-card-body">
+                        <strong>142.000 €</strong>
+                        <span>Madrid · 2 camas · terraza · 74 m2</span>
+                        <div class="property-tags">
+                          <small>Reformado</small>
+                          <small>Alquiler: 890 € pm</small>
+                          <small>Rentabilidad neta: 5.9%</small>
+                        </div>
+                      </div>
+                    </article>
+                    <article class="property-card">
+                      <div class="property-photo property-photo-c"></div>
+                      <div class="property-card-body">
+                        <strong>118.500 €</strong>
+                        <span>Málaga · apartamento · 62 m2</span>
+                        <div class="property-tags">
+                          <small>Alta demanda</small>
+                          <small>Alquiler: 760 € pm</small>
+                          <small>Rentabilidad neta: 6.2%</small>
+                        </div>
+                      </div>
+                    </article>
+                  </section>
+                </main>
+                <nav class="mobile-bottom">
+                  <button class="active" type="button" data-mobile-target="home"><svg class="mobile-icon"><use href="#icon-home"></use></svg><span>Inicio</span></button>
+                  <button type="button"><svg class="mobile-icon"><use href="#icon-search"></use></svg><span>Explorar</span></button>
+                  <button type="button"><svg class="mobile-icon"><use href="#icon-advisor"></use></svg><span>Asesor</span></button>
+                  <button type="button"><svg class="mobile-icon"><use href="#icon-list"></use></svg><span>Lista</span></button>
+                  <button type="button"><svg class="mobile-icon"><use href="#icon-panel"></use></svg><span>Panel</span></button>
+                </nav>
+              </section>
+
+              <section class="mobile-screen" data-mobile-screen="account">
+                <header class="mobile-backbar">
+                  <button type="button" data-mobile-target="home" aria-label="Volver"></button>
+                </header>
+                <main class="mobile-content account-content">
+                  <h1>Mi cuenta</h1>
+                  <div class="account-group">
+                    <button type="button"><svg class="mobile-icon"><use href="#icon-user"></use></svg><span>Perfil</span></button>
+                    <button type="button"><svg class="mobile-icon"><use href="#icon-globe"></use></svg><span>Idioma</span></button>
+                    <button type="button"><svg class="mobile-icon"><use href="#icon-coin"></use></svg><span>Moneda</span></button>
+                  </div>
+                  <div class="account-group">
+                    <button class="contact-entry" type="button" data-mobile-target="contact"><svg class="mobile-icon"><use href="#icon-chat"></use></svg><span>Contacta con nosotros</span></button>
+                    <button type="button"><svg class="mobile-icon"><use href="#icon-help"></use></svg><span>Ayuda</span></button>
+                  </div>
+                  <div class="account-group single">
+                    <button type="button"><svg class="mobile-icon"><use href="#icon-invite"></use></svg><span>Recomienda a un amigo</span></button>
+                  </div>
+                </main>
+                <nav class="mobile-bottom">
+                  <button type="button" data-mobile-target="home"><svg class="mobile-icon"><use href="#icon-home"></use></svg><span>Inicio</span></button>
+                  <button type="button"><svg class="mobile-icon"><use href="#icon-search"></use></svg><span>Explorar</span></button>
+                  <button type="button"><svg class="mobile-icon"><use href="#icon-advisor"></use></svg><span>Asesor</span></button>
+                  <button type="button"><svg class="mobile-icon"><use href="#icon-list"></use></svg><span>Lista</span></button>
+                  <button class="active" type="button"><svg class="mobile-icon"><use href="#icon-panel"></use></svg><span>Panel</span></button>
+                </nav>
+              </section>
+
+              <section class="mobile-screen" data-mobile-screen="contact">
+                <header class="mobile-backbar">
+                  <button type="button" data-mobile-target="account" aria-label="Volver"></button>
+                </header>
+                <main class="mobile-content contact-content">
+                  <h1>Contacta con nosotros</h1>
+                  <article class="support-card consultation-card">
+                    <div>
+                      <h2>Mis consultas</h2>
+                      <p>Revisa el estado y las ultimas novedades de tus incidencias.</p>
+                    </div>
+                    <div id="mobileConsultations" class="mobile-consultations"></div>
+                  </article>
+                  <article class="support-card action-card">
+                    <h2>Crear incidencia</h2>
+                    <p>Cuéntanos que ocurre para ayudarte mejor y dar seguimiento desde la app.</p>
+                    <button class="mobile-primary" type="button" data-mobile-target="ticket-form">Crear incidencia</button>
+                  </article>
+                  <article class="support-card slim email-card">
+                    <h2>Escribir por email</h2>
+                    <p>Para consultas generales, seguimos disponibles en <strong>support@prophero.com</strong>.</p>
+                  </article>
+                </main>
+              </section>
+
+              <section class="mobile-screen" data-mobile-screen="ticket-form">
+                <header class="mobile-backbar">
+                  <button type="button" data-mobile-target="contact" aria-label="Volver"></button>
+                </header>
+                <form id="mobileTicketForm" class="mobile-content ticket-form">
+                  <h1>Nueva incidencia</h1>
+                  <p class="form-intro">Te pediremos algunos datos para entender mejor lo que ocurre y ayudarte de la forma mas rapida posible.</p>
+
+                  <div class="locked-requester">
+                    <span>Solicitante</span>
+                    <strong id="mobileRequester"></strong>
+                    <small id="mobileRequesterMeta"></small>
+                  </div>
+
+                  <label>Propiedad
+                    <span class="mobile-field-control">
+                      <select id="mobilePropertySelect"></select>
+                      <small id="mobilePropertyMeta"></small>
+                    </span>
+                  </label>
+
+                  <label>Contrato
+                    <span class="mobile-field-control">
+                      <select id="mobileContractSelect"></select>
+                      <small id="mobileContractMeta"></small>
+                    </span>
+                  </label>
+
+                  <label>Categoria
+                    <select id="mobileCategorySelect">
+                      <option>Mantenimiento</option>
+                      <option>Seguridad</option>
+                      <option>Pagos</option>
+                      <option>Contrato</option>
+                      <option>Reporting</option>
+                      <option>Administracion</option>
+                      <option>Operacion</option>
+                    </select>
+                  </label>
+
+                  <label>Mensaje
+                    <textarea id="mobileMessage" rows="5" placeholder="Cuéntanos qué ocurre y desde cuándo."></textarea>
+                  </label>
+
+                  <div class="mobile-attachments">
+                    <span>Adjuntos</span>
+                    <div>
+                      <button type="button" class="attachment-toggle" data-attachment="photo">Imagen</button>
+                      <button type="button" class="attachment-toggle" data-attachment="video">Video</button>
+                    </div>
+                    <small id="mobileAttachmentSummary">Puedes adjuntar fotos o videos para acelerar la revision.</small>
+                  </div>
+
+                  <button class="mobile-primary" type="submit">Enviar incidencia</button>
+                </form>
+              </section>
+
+              <section class="mobile-screen" data-mobile-screen="ticket-success">
+                <main class="mobile-content success-content">
+                  <div class="success-mark"></div>
+                  <h1>Incidencia creada</h1>
+                  <p>Tu caso ya quedo registrado. Puedes estar tranquilo: nuestro equipo lo revisara y se encargara de avanzar lo antes posible.</p>
+                  <p>Te avisaremos desde la app cuando haya novedades o necesitemos informacion adicional.</p>
+                  <article class="success-card">
+                    <span>Ticket</span>
+                    <strong id="mobileCreatedTicketId">INC-2025-00000</strong>
+                    <small>Estado: Nuevo</small>
+                  </article>
+                  <button class="mobile-secondary" type="button" data-mobile-target="home">Volver al inicio</button>
+                </main>
+              </section>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script>
+const statuses = [
+  "Nuevo",
+  "Abierto / Asignado",
+  "En progreso",
+  "Pendiente / En espera",
+  "Resuelto",
+  "Cerrado",
+];
+
+const assignees = [
+  "Sin asignar",
+  "Maria Gonzalez",
+  "Carlos Perez",
+  "Lucia Alvarez",
+  "Property Manager Valencia",
+];
+
+const priorities = ["P1", "P2", "P3", "P4"];
+
+const categories = [
+  "Mantenimiento",
+  "Seguridad",
+  "Administracion",
+  "Contrato",
+  "Reporting",
+  "Pagos",
+  "Operacion",
+];
+
+const entityDirectory = [
+  {
+    name: "Laura Martinez",
+    role: "Inversor",
+    documentType: "DNI",
+    documentNumber: "DEMO-DNI-001",
+    properties: [
+      {
+        name: "Valencia - Ruzafa 2B",
+        id: "PROP-002113",
+        contracts: [
+          { name: "Contrato Alquiler", id: "CONT-00778", startDate: "01/03/2025" },
+          { name: "Mandato PM", id: "CONT-00778-PM", startDate: "15/01/2025" },
+        ],
+      },
+      {
+        name: "Valencia - Ruzafa 1D",
+        id: "PROP-002219",
+        contracts: [{ name: "Mandato PM", id: "CONT-00841-PM", startDate: "10/04/2025" }],
+      },
+    ],
+  },
+  {
+    name: "Carlos Ruiz",
+    role: "Inquilino",
+    documentType: "NIE",
+    documentNumber: "DEMO-NIE-002",
+    properties: [
+      {
+        name: "Madrid - Chamberi 4A",
+        id: "PROP-004311",
+        contracts: [{ name: "Contrato Alquiler", id: "CONT-00912", startDate: "01/02/2025" }],
+      },
+    ],
+  },
+  {
+    name: "Ana Fernandez",
+    role: "Inquilino",
+    documentType: "Pasaporte",
+    documentNumber: "DEMO-PASS-003",
+    properties: [
+      {
+        name: "Barcelona - Poblenou 1C",
+        id: "PROP-001894",
+        contracts: [{ name: "Contrato Alquiler", id: "CONT-00631", startDate: "20/05/2025" }],
+      },
+    ],
+  },
+  {
+    name: "Miguel Angel Soto",
+    role: "Inversor",
+    documentType: "DNI",
+    documentNumber: "DEMO-DNI-004",
+    properties: [
+      {
+        name: "Madrid - Salamanca 3E",
+        id: "PROP-005214",
+        contracts: [
+          { name: "Mandato PM", id: "CONT-01082", startDate: "01/11/2024" },
+          { name: "Contrato Alquiler", id: "CONT-01083", startDate: "01/12/2024" },
+        ],
+      },
+    ],
+  },
+  {
+    name: "Javier Lopez",
+    role: "Inquilino",
+    documentType: "NIE",
+    documentNumber: "DEMO-NIE-005",
+    properties: [
+      {
+        name: "Valencia - Ruzafa 1D",
+        id: "PROP-002219",
+        contracts: [{ name: "Contrato Alquiler", id: "CONT-00841", startDate: "01/04/2025" }],
+      },
+    ],
+  },
+  {
+    name: "Sofia Garcia",
+    role: "Inversor",
+    documentType: "DNI",
+    documentNumber: "DEMO-DNI-006",
+    properties: [
+      {
+        name: "Barcelona - Eixample 2A",
+        id: "PROP-003022",
+        contracts: [
+          { name: "Mandato PM", id: "CONT-00688", startDate: "15/09/2024" },
+          { name: "Contrato Alquiler", id: "CONT-00689", startDate: "01/10/2024" },
+        ],
+      },
+    ],
+  },
+  {
+    name: "Pedro Sanchez",
+    role: "Inversor",
+    documentType: "Pasaporte",
+    documentNumber: "DEMO-PASS-007",
+    properties: [
+      {
+        name: "Madrid - Chamberi 4A",
+        id: "PROP-004311",
+        contracts: [{ name: "Mandato PM", id: "CONT-00912-PM", startDate: "12/01/2025" }],
+      },
+    ],
+  },
+  {
+    name: "Nadia Romero",
+    role: "Inversor",
+    documentType: "DNI",
+    documentNumber: "DEMO-DNI-008",
+    properties: [
+      {
+        name: "Malaga - Centro 5B",
+        id: "PROP-006018",
+        contracts: [
+          { name: "Mandato PM", id: "CONT-01104", startDate: "18/02/2025" },
+          { name: "Contrato Alquiler", id: "CONT-01105", startDate: "01/03/2025" },
+        ],
+      },
+    ],
+  },
+  {
+    name: "Diego Medina",
+    role: "Proveedor",
+    documentType: "DNI",
+    documentNumber: "DEMO-DNI-009",
+    properties: [
+      {
+        name: "Sevilla - Triana 2C",
+        id: "PROP-007204",
+        contracts: [{ name: "Orden Servicio", id: "OS-00118", startDate: "05/06/2025" }],
+      },
+    ],
+  },
+  {
+    name: "Valeria Torres",
+    role: "Inquilino",
+    documentType: "NIE",
+    documentNumber: "DEMO-NIE-010",
+    properties: [
+      {
+        name: "Malaga - Centro 5B",
+        id: "PROP-006018",
+        contracts: [{ name: "Contrato Alquiler", id: "CONT-01105", startDate: "01/03/2025" }],
+      },
+    ],
+  },
+];
+
+const tickets = [
+  {
+    id: "INC-2025-00482",
+    title: "Humedad en pared - Valencia Ruzafa 2B",
+    requester: "Laura Martinez",
+    role: "Inversor",
+    documentType: "DNI",
+    documentNumber: "DEMO-DNI-001",
+    property: "Valencia - Ruzafa 2B",
+    propertyId: "PROP-002113",
+    contract: "Contrato Alquiler",
+    contractId: "CONT-00778",
+    channel: "WhatsApp",
+    created: "Hoy, 09:12",
+    createdDate: "2026-06-15",
+    priority: "P1",
+    status: "En progreso",
+    assignee: "Maria Gonzalez",
+    sla: "10m vencido",
+    category: "Mantenimiento",
+    confidence: 92,
+    summary: "El inversor reporta humedad en pared del dormitorio. Adjunta dos fotos y solicita revision urgente del equipo de mantenimiento.",
+    missing: ["Desde cuando ocurre?", "Hay mas zonas afectadas?", "Se informo al inquilino?"],
+    next: "Asignar a mantenimiento Valencia y pedir disponibilidad para visita en las proximas 24h.",
+    messages: [
+      [
+        "Laura Martinez",
+        "Buenos dias, aparecio humedad en la pared del dormitorio. Adjunto fotos. Pueden revisarlo por favor?",
+        "Hoy, 09:12",
+        [
+          { type: "photo", name: "pared-humedad-1.jpg", description: "Humedad junto al zocalo", image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80" },
+          { type: "photo", name: "pared-humedad-2.jpg", description: "Detalle de mancha", image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=80" },
+          { type: "video", name: "recorrido-dormitorio.mp4", description: "Video 0:18" },
+        ],
+      ],
+      ["Sistema / IA", "Ticket clasificado como mantenimiento P1 por riesgo de habitabilidad.", "Hoy, 09:13"],
+      ["Maria Gonzalez", "Hola Laura, ya hemos creado la incidencia y la asignamos al equipo de mantenimiento. Te informaremos en breve.", "Hoy, 09:25"],
+    ],
+  },
+  {
+    id: "INC-2025-00481",
+    title: "Fuga de agua cocina",
+    requester: "Carlos Ruiz",
+    role: "Inquilino",
+    documentType: "NIE",
+    documentNumber: "DEMO-NIE-002",
+    property: "Madrid - Chamberi 4A",
+    propertyId: "PROP-004311",
+    contract: "Contrato Alquiler",
+    contractId: "CONT-00912",
+    channel: "Email",
+    created: "Hoy, 09:05",
+    createdDate: "2026-06-15",
+    priority: "P1",
+    status: "Nuevo",
+    assignee: "Sin asignar",
+    sla: "5m restantes",
+    category: "Mantenimiento",
+    confidence: 89,
+    summary: "El inquilino informa una fuga bajo el fregadero de la cocina. No hay confirmacion de corte de agua ni fotos.",
+    missing: ["Foto de la fuga", "Confirmar si el agua fue cortada", "Telefono de contacto"],
+    next: "Pedir fotos y confirmar si se requiere proveedor urgente.",
+    messages: [["Carlos Ruiz", "Hay una fuga de agua debajo del fregadero y el suelo esta mojado.", "Hoy, 09:05"]],
+  },
+  {
+    id: "INC-2025-00476",
+    title: "Aire acondicionado no enfria",
+    requester: "Ana Fernandez",
+    role: "Inquilino",
+    documentType: "Pasaporte",
+    documentNumber: "DEMO-PASS-003",
+    property: "Barcelona - Poblenou 1C",
+    propertyId: "PROP-001894",
+    contract: "Contrato Alquiler",
+    contractId: "CONT-00631",
+    channel: "App",
+    created: "Hoy, 08:32",
+    createdDate: "2026-06-15",
+    priority: "P2",
+    status: "Abierto / Asignado",
+    assignee: "Carlos Perez",
+    sla: "35m restantes",
+    category: "Mantenimiento",
+    confidence: 87,
+    summary: "La inquilina reporta que el aire acondicionado enciende pero no enfria. Impacta habitabilidad por temperatura.",
+    missing: ["Modelo del equipo", "Foto del mando", "Fecha de ultimo mantenimiento"],
+    next: "Asignar a proveedor de climatizacion y solicitar datos del equipo.",
+    messages: [["Ana Fernandez", "El aire no enfria desde ayer. Enciende pero sale aire caliente.", "Hoy, 08:32"]],
+  },
+  {
+    id: "INC-2025-00472",
+    title: "Consulta gastos comunidad",
+    requester: "Miguel Angel Soto",
+    role: "Inversor",
+    documentType: "DNI",
+    documentNumber: "DEMO-DNI-004",
+    property: "Madrid - Salamanca 3E",
+    propertyId: "PROP-005214",
+    contract: "Mandato PM",
+    contractId: "CONT-01082",
+    channel: "HubSpot",
+    created: "Ayer, 17:20",
+    createdDate: "2026-06-14",
+    priority: "P3",
+    status: "Pendiente / En espera",
+    assignee: "Lucia Alvarez",
+    sla: "1h 20m restantes",
+    category: "Administracion",
+    confidence: 81,
+    summary: "El inversor consulta un cargo de comunidad reflejado en el reporte mensual.",
+    missing: ["Confirmar periodo del cargo", "Adjuntar factura de comunidad"],
+    next: "Enviar desglose del cargo y link al reporte mensual.",
+    messages: [["Miguel Angel Soto", "No entiendo el gasto de comunidad de este mes. Podeis explicarlo?", "Ayer, 17:20"]],
+  },
+  {
+    id: "INC-2025-00470",
+    title: "Persiana no sube",
+    requester: "Javier Lopez",
+    role: "Inquilino",
+    documentType: "NIE",
+    documentNumber: "DEMO-NIE-005",
+    property: "Valencia - Ruzafa 1D",
+    propertyId: "PROP-002219",
+    contract: "Contrato Alquiler",
+    contractId: "CONT-00841",
+    channel: "WhatsApp",
+    created: "Hoy, 10:05",
+    createdDate: "2026-06-15",
+    priority: "P2",
+    status: "Pendiente / En espera",
+    assignee: "Property Manager Valencia",
+    sla: "10m vencido",
+    category: "Mantenimiento",
+    confidence: 86,
+    summary: "El inquilino reporta que la persiana del dormitorio quedo trabada y no puede subirse.",
+    missing: ["Foto de la persiana", "Confirmar si afecta acceso o seguridad"],
+    next: "Asignar proveedor local de persianas y confirmar disponibilidad en el dia.",
+    messages: [["Javier Lopez", "La persiana del dormitorio se quedo abajo y no sube.", "Hoy, 10:05"]],
+  },
+  {
+    id: "INC-2025-00468",
+    title: "Duda renovacion contrato",
+    requester: "Sofia Garcia",
+    role: "Inversor",
+    documentType: "DNI",
+    documentNumber: "DEMO-DNI-006",
+    property: "Barcelona - Eixample 2A",
+    propertyId: "PROP-003022",
+    contract: "Mandato PM",
+    contractId: "CONT-00688",
+    channel: "Email",
+    created: "Hoy, 11:10",
+    createdDate: "2026-06-15",
+    priority: "P3",
+    status: "Pendiente / En espera",
+    assignee: "Lucia Alvarez",
+    sla: "45m restantes",
+    category: "Contrato",
+    confidence: 79,
+    summary: "La inversora consulta proximos pasos para la renovacion del contrato de alquiler.",
+    missing: ["Confirmar fecha deseada de renovacion", "Validar condiciones actuales"],
+    next: "Responder con opciones de renovacion y pedir confirmacion de preferencia.",
+    messages: [["Sofia Garcia", "Quisiera saber como avanzamos con la renovacion del contrato.", "Hoy, 11:10"]],
+  },
+  {
+    id: "INC-2025-00464",
+    title: "Solicitud factura 2024",
+    requester: "Laura Martinez",
+    role: "Inversor",
+    documentType: "DNI",
+    documentNumber: "DEMO-DNI-001",
+    property: "Valencia - Ruzafa 2B",
+    propertyId: "PROP-002113",
+    contract: "Mandato PM",
+    contractId: "CONT-00778",
+    channel: "HubSpot",
+    created: "Ayer, 12:40",
+    createdDate: "2026-06-14",
+    priority: "P4",
+    status: "Resuelto",
+    assignee: "Maria Gonzalez",
+    sla: "3h 10m restantes",
+    category: "Administracion",
+    confidence: 76,
+    summary: "La inversora solicita una factura anual para documentacion fiscal.",
+    missing: ["Ningun dato faltante"],
+    next: "Enviar factura y cerrar si confirma recepcion.",
+    messages: [["Maria Gonzalez", "Factura enviada por email. Dejamos el caso resuelto.", "Ayer, 13:05"]],
+  },
+  {
+    id: "INC-2025-00460",
+    title: "Consulta reporte mensual",
+    requester: "Pedro Sanchez",
+    role: "Inversor",
+    documentType: "Pasaporte",
+    documentNumber: "DEMO-PASS-007",
+    property: "Madrid - Chamberi 4A",
+    propertyId: "PROP-004311",
+    contract: "Mandato PM",
+    contractId: "CONT-00912",
+    channel: "App",
+    created: "Hoy, 12:05",
+    createdDate: "2026-06-15",
+    priority: "P4",
+    status: "Nuevo",
+    assignee: "Sin asignar",
+    sla: "3h 40m restantes",
+    category: "Reporting",
+    confidence: 74,
+    summary: "El inversor consulta cuando estara disponible el reporte mensual de la propiedad.",
+    missing: ["Confirmar mes consultado"],
+    next: "Responder fecha estimada de publicacion y enlazar reporte cuando este disponible.",
+    messages: [["Pedro Sanchez", "Cuando puedo ver el reporte mensual de Chamberi?", "Hoy, 12:05"]],
+  },
+];
+
+const caseCatalog = [
+  {
+    title: "Cerradura no abre",
+    category: "Seguridad",
+    priority: "P1",
+    summary: "El solicitante no puede acceder a la vivienda y requiere intervencion urgente.",
+    missing: ["Foto de la cerradura", "Confirmar si hay ocupantes dentro", "Telefono de contacto"],
+    next: "Asignar cerrajero de guardia y confirmar acceso seguro.",
+    message: "No puedo abrir la puerta de entrada. La llave gira pero no destraba.",
+  },
+  {
+    title: "Termo sin agua caliente",
+    category: "Mantenimiento",
+    priority: "P2",
+    summary: "El termo no enciende y afecta un servicio esencial de la vivienda.",
+    missing: ["Foto del termo", "Modelo del equipo", "Confirmar si afecta cocina y ducha"],
+    next: "Pedir foto del equipo y asignar proveedor de fontaneria.",
+    message: "Desde anoche no tenemos agua caliente. El termo no enciende.",
+  },
+  {
+    title: "Derrame desde techo del bano",
+    category: "Mantenimiento",
+    priority: "P1",
+    summary: "Se informa agua cayendo desde el techo del bano con posible impacto en habitabilidad.",
+    missing: ["Video del derrame", "Confirmar si se corto el agua", "Avisar al vecino superior"],
+    next: "Escalar a property manager y proveedor urgente de fontaneria.",
+    message: "Esta cayendo agua del techo del bano. Ya puse un cubo pero sigue goteando.",
+  },
+  {
+    title: "Revision de liquidacion mensual",
+    category: "Reporting",
+    priority: "P3",
+    summary: "El inversor solicita aclaracion sobre importes del reporte mensual.",
+    missing: ["Mes consultado", "Linea exacta del reporte"],
+    next: "Revisar reporte y enviar desglose del movimiento.",
+    message: "Necesito revisar una diferencia en la liquidacion mensual de mi propiedad.",
+  },
+  {
+    title: "Cambio de titularidad bancaria",
+    category: "Administracion",
+    priority: "P4",
+    summary: "El inversor pide modificar la cuenta bancaria de cobro.",
+    missing: ["IBAN actualizado", "Documento de titularidad bancaria"],
+    next: "Solicitar documentacion y enviar flujo seguro de actualizacion.",
+    message: "Quiero cambiar la cuenta donde recibo los pagos del alquiler.",
+  },
+  {
+    title: "Ruido por obra en edificio",
+    category: "Operacion",
+    priority: "P3",
+    summary: "El inquilino reporta molestias por obra y pide informacion sobre duracion.",
+    missing: ["Horario de ruidos", "Fotos o aviso de comunidad"],
+    next: "Consultar con administracion de finca y responder plazo estimado.",
+    message: "Hay obras con mucho ruido desde temprano. Saben cuanto durara?",
+  },
+  {
+    title: "Pago de renta no recibido",
+    category: "Pagos",
+    priority: "P2",
+    summary: "El inversor no visualiza el cobro esperado de renta en su cuenta.",
+    missing: ["Mes de renta", "Fecha esperada de pago"],
+    next: "Validar conciliacion bancaria y comunicar estado del pago.",
+    message: "No veo acreditado el pago de la renta de este mes.",
+  },
+  {
+    title: "Renovacion pendiente de firma",
+    category: "Contrato",
+    priority: "P3",
+    summary: "La renovacion contractual esta pendiente de confirmacion por una de las partes.",
+    missing: ["Parte pendiente de firma", "Fecha limite"],
+    next: "Enviar recordatorio y actualizar estado contractual.",
+    message: "Queria saber si ya esta lista la renovacion para firmar.",
+  },
+  {
+    title: "Llave perdida por inquilino",
+    category: "Seguridad",
+    priority: "P2",
+    summary: "El inquilino perdio una llave y solicita instrucciones para reposicion.",
+    missing: ["Confirmar si hay copia disponible", "Riesgo de acceso no autorizado"],
+    next: "Coordinar copia o cambio de bombin segun riesgo.",
+    message: "Perdi una llave del piso y necesito saber como proceder.",
+  },
+];
+
+const seedPlan = [
+  [490, 7, 0, 0, "P1", "Nuevo", "Sin asignar", "WhatsApp", "12m vencido", "Hoy, 08:48", "2026-06-15"],
+  [491, 8, 0, 1, "P2", "Abierto / Asignado", "Carlos Perez", "HubSpot", "42m restantes", "Hoy, 08:55", "2026-06-15"],
+  [492, 9, 0, 2, "P1", "En progreso", "Maria Gonzalez", "Email", "18m vencido", "Hoy, 09:18", "2026-06-15"],
+  [493, 0, 1, 3, "P3", "Pendiente / En espera", "Lucia Alvarez", "App", "1h 55m restantes", "Hoy, 09:45", "2026-06-15"],
+  [494, 1, 0, 4, "P4", "Nuevo", "Sin asignar", "Email", "3h 30m restantes", "Hoy, 10:20", "2026-06-15"],
+  [495, 2, 0, 5, "P3", "Abierto / Asignado", "Carlos Perez", "WhatsApp", "1h 15m restantes", "Hoy, 10:40", "2026-06-15"],
+  [496, 3, 0, 6, "P2", "Pendiente / En espera", "Maria Gonzalez", "HubSpot", "8m vencido", "Hoy, 11:02", "2026-06-15"],
+  [497, 4, 0, 7, "P3", "En progreso", "Lucia Alvarez", "Email", "55m restantes", "Hoy, 11:30", "2026-06-15"],
+  [498, 5, 0, 8, "P2", "Nuevo", "Sin asignar", "App", "28m restantes", "Hoy, 11:52", "2026-06-15"],
+  [499, 6, 0, 3, "P3", "Resuelto", "Maria Gonzalez", "Email", "Dentro de SLA", "Hoy, 12:10", "2026-06-15"],
+  [500, 7, 0, 4, "P4", "Cerrado", "Lucia Alvarez", "HubSpot", "Dentro de SLA", "Ayer, 16:35", "2026-06-14"],
+  [501, 8, 0, 1, "P2", "En progreso", "Property Manager Valencia", "WhatsApp", "50m restantes", "Ayer, 15:10", "2026-06-14"],
+  [502, 9, 0, 6, "P2", "Abierto / Asignado", "Maria Gonzalez", "App", "20m vencido", "Ayer, 14:50", "2026-06-14"],
+  [503, 0, 0, 0, "P1", "Pendiente / En espera", "Carlos Perez", "WhatsApp", "25m vencido", "Ayer, 13:10", "2026-06-14"],
+  [504, 1, 0, 2, "P1", "En progreso", "Maria Gonzalez", "Email", "6m restantes", "Ayer, 12:05", "2026-06-14"],
+  [505, 2, 0, 5, "P3", "Nuevo", "Sin asignar", "App", "2h 15m restantes", "Ayer, 11:40", "2026-06-14"],
+  [506, 3, 0, 7, "P3", "Abierto / Asignado", "Lucia Alvarez", "HubSpot", "1h 35m restantes", "Ayer, 10:20", "2026-06-14"],
+  [507, 4, 0, 1, "P2", "Resuelto", "Property Manager Valencia", "WhatsApp", "Dentro de SLA", "Ayer, 09:18", "2026-06-14"],
+  [508, 5, 0, 4, "P4", "Pendiente / En espera", "Maria Gonzalez", "Email", "2h 40m restantes", "2026-06-13, 18:10", "2026-06-13"],
+  [509, 6, 0, 3, "P3", "Cerrado", "Carlos Perez", "App", "Dentro de SLA", "2026-06-13, 16:25", "2026-06-13"],
+  [510, 7, 0, 8, "P2", "Nuevo", "Sin asignar", "WhatsApp", "1h restantes", "2026-06-13, 12:45", "2026-06-13"],
+  [511, 8, 0, 0, "P1", "Abierto / Asignado", "Carlos Perez", "HubSpot", "14m restantes", "2026-06-13, 11:35", "2026-06-13"],
+  [512, 9, 0, 5, "P3", "En progreso", "Lucia Alvarez", "Email", "2h 5m restantes", "2026-06-12, 17:25", "2026-06-12"],
+  [513, 0, 0, 6, "P2", "Pendiente / En espera", "Maria Gonzalez", "App", "35m restantes", "2026-06-12, 15:50", "2026-06-12"],
+  [514, 1, 0, 7, "P3", "Resuelto", "Carlos Perez", "Email", "Dentro de SLA", "2026-06-12, 14:15", "2026-06-12"],
+  [515, 2, 0, 4, "P4", "Nuevo", "Sin asignar", "HubSpot", "3h 20m restantes", "2026-06-11, 16:00", "2026-06-11"],
+  [516, 3, 0, 3, "P3", "Abierto / Asignado", "Maria Gonzalez", "WhatsApp", "1h 10m restantes", "2026-06-11, 11:20", "2026-06-11"],
+];
+
+function makeSeedTicket([number, requesterIndex, propertyIndex, caseIndex, priority, status, assignee, channel, sla, created, createdDate]) {
+  const person = entityDirectory[requesterIndex];
+  const property = person.properties[propertyIndex] || person.properties[0];
+  const contract = property.contracts[0];
+  const item = caseCatalog[caseIndex];
+  return {
+    id: `INC-2025-00${number}`,
+    title: `${item.title} - ${property.name}`,
+    requester: person.name,
+    role: person.role,
+    documentType: person.documentType,
+    documentNumber: person.documentNumber,
+    property: property.name,
+    propertyId: property.id,
+    contract: contract.name,
+    contractId: contract.id,
+    channel,
+    created,
+    createdDate,
+    priority,
+    status,
+    assignee,
+    sla,
+    category: item.category,
+    confidence: Math.max(71, 94 - (number % 19)),
+    summary: item.summary,
+    missing: item.missing,
+    next: item.next,
+    messages: [
+      [person.name, item.message, created],
+      ["Sistema / IA", `Ticket clasificado como ${item.category.toLowerCase()} ${priority} segun impacto y SLA.`, created],
+    ],
+  };
+}
+
+tickets.push(...seedPlan.map(makeSeedTicket));
+
+const storageKey = "prophero.incident-centre.tickets.v1";
+const windowStateKey = "propheroIncidentCentreState";
+
+function readWindowState() {
+  try {
+    if (!window.name) return null;
+    const state = JSON.parse(window.name);
+    return state && state[windowStateKey] ? state[windowStateKey] : null;
+  } catch (error) {
+    return null;
+  }
+}
+
+function writeWindowState(serializedTickets) {
+  try {
+    const current = window.name ? JSON.parse(window.name) : {};
+    current[windowStateKey] = serializedTickets;
+    window.name = JSON.stringify(current);
+  } catch (error) {
+    window.name = JSON.stringify({ [windowStateKey]: serializedTickets });
+  }
+}
+
+function loadStoredTickets() {
+  try {
+    let stored = readWindowState();
+    try {
+      stored = window.localStorage?.getItem(storageKey) || stored;
+    } catch (error) {
+      stored = stored || null;
+    }
+    if (!stored) return;
+    const parsed = JSON.parse(stored);
+    if (!Array.isArray(parsed) || !parsed.length) return;
+    tickets.splice(0, tickets.length, ...parsed);
+  } catch (error) {
+    console.warn("No se pudo cargar el estado guardado del prototipo.", error);
+  }
+}
+
+function postTicketsToServer(serialized) {
+  if (typeof fetch === "function") {
+    fetch("/api/tickets", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: serialized,
+    }).catch(() => {});
+    return;
+  }
+
+  if (typeof XMLHttpRequest !== "function") return;
+  const request = new XMLHttpRequest();
+  request.open("POST", "/api/tickets", true);
+  request.setRequestHeader("Content-Type", "application/json");
+  request.send(serialized);
+}
+
+function getTicketsFromServer() {
+  if (typeof fetch === "function") {
+    return fetch("/api/tickets", { cache: "no-store" }).then((response) => {
+      if (!response.ok) return [];
+      return response.json();
+    });
+  }
+
+  if (typeof XMLHttpRequest !== "function") return Promise.resolve([]);
+  return new Promise((resolve) => {
+    const request = new XMLHttpRequest();
+    request.open("GET", "/api/tickets", true);
+    request.onreadystatechange = () => {
+      if (request.readyState !== 4) return;
+      if (request.status < 200 || request.status >= 300) {
+        resolve([]);
+        return;
+      }
+      try {
+        resolve(JSON.parse(request.responseText || "[]"));
+      } catch (error) {
+        resolve([]);
+      }
+    };
+    request.send();
+  });
+}
+
+function getTicketOverridesFromServer() {
+  return new Promise((resolve) => {
+    const callbackName = `__phTicketOverrides${Date.now()}${Math.round(Math.random() * 1000)}`;
+    const script = document.createElement("script");
+    const cleanup = () => {
+      delete window[callbackName];
+      script.remove();
+    };
+
+    window[callbackName] = (overrides) => {
+      cleanup();
+      resolve(overrides && typeof overrides === "object" ? overrides : {});
+    };
+
+    script.onerror = () => {
+      cleanup();
+      resolve({});
+    };
+
+    script.src = `/api/ticket-overrides.js?callback=${callbackName}&t=${Date.now()}`;
+    document.head.appendChild(script);
+    window.setTimeout(() => {
+      if (window[callbackName]) {
+        cleanup();
+        resolve({});
+      }
+    }, 1200);
+  });
+}
+
+function applyTicketOverrides(overrides) {
+  Object.values(overrides || {}).forEach((override) => {
+    if (!override || !override.id) return;
+    const index = tickets.findIndex((ticket) => ticket.id === override.id);
+    if (index >= 0) {
+      tickets.splice(index, 1, override);
+    } else {
+      tickets.unshift(override);
+    }
+  });
+}
+
+function persistTicketOverride(ticket) {
+  if (!ticket || !ticket.id) return;
+  const serialized = encodeURIComponent(JSON.stringify(ticket));
+  const src = `/api/ticket-event.js?payload=${serialized}&t=${Date.now()}`;
+  const script = document.createElement("script");
+  script.src = src;
+  script.async = true;
+  script.onload = () => script.remove();
+  script.onerror = () => script.remove();
+  document.head.appendChild(script);
+}
+
+function persistTickets() {
+  const serialized = JSON.stringify(tickets);
+  postTicketsToServer(serialized);
+  persistTicketOverride(tickets.find((ticket) => ticket.id === selectedId));
+
+  try {
+    window.localStorage?.setItem(storageKey, serialized);
+  } catch (error) {
+    // The browser sandbox can deny localStorage; server persistence remains primary.
+  }
+
+  try {
+    writeWindowState(serialized);
+  } catch (error) {
+    console.warn("No se pudo guardar el estado del prototipo.", error);
+  }
+}
+
+loadStoredTickets();
+
+async function hydrateStoredTickets() {
+  try {
+    const parsed = await getTicketsFromServer();
+    if (Array.isArray(parsed) && parsed.length) {
+      tickets.splice(0, tickets.length, ...parsed);
+    }
+  } catch (error) {
+    console.warn("No se pudo sincronizar el estado guardado del prototipo.", error);
+  }
+
+  try {
+    applyTicketOverrides(await getTicketOverridesFromServer());
+  } catch (error) {
+    console.warn("No se pudieron aplicar cambios guardados por ticket.", error);
+  }
+
+  selectedId = tickets.some((ticket) => ticket.id === selectedId) ? selectedId : tickets[0].id;
+}
+
+let selectedId = tickets[0].id;
+let activeFilter = "mine";
+let currentView = "backoffice";
+let mobileScreen = "home";
+let mobilePropertyId = "PROP-002113";
+let mobileContractId = "CONT-00778";
+let mobileCreatedTicketId = "";
+const mobileAttachments = new Set();
+const mobileUser = entityDirectory.find((person) => person.name === "Laura Martinez") || entityDirectory[0];
+
+const $ = (selector) => document.querySelector(selector);
+
+function todayIso() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function showToast(message) {
+  const toast = $("#toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+  window.setTimeout(() => toast.classList.remove("show"), 2600);
+}
+
+function showBackoffice() {
+  currentView = "backoffice";
+  $("#backofficeView").hidden = false;
+  $("#mobileAppView").hidden = true;
+  render();
+}
+
+function showMobileApp(screen = mobileScreen) {
+  currentView = "mobile-app";
+  $("#backofficeView").hidden = true;
+  $("#mobileAppView").hidden = false;
+  showMobileScreen(screen);
+}
+
+function showMobileScreen(screen) {
+  mobileScreen = screen;
+  document.querySelectorAll(".mobile-screen").forEach((item) => {
+    item.classList.toggle("active", item.dataset.mobileScreen === screen);
+  });
+  if (screen === "contact") renderMobileConsultations();
+  if (screen === "ticket-form") renderMobileTicketForm();
+}
+
+function mobileProperty() {
+  return mobileUser.properties.find((property) => property.id === mobilePropertyId) || mobileUser.properties[0];
+}
+
+function mobileContract() {
+  const property = mobileProperty();
+  return property.contracts.find((contract) => contract.id === mobileContractId) || property.contracts[0];
+}
+
+function mobileContractOptionLabel(contract, property) {
+  return `${contract.name} · ${contract.id} · ${property.name} · Inicio ${contract.startDate || "s/d"}`;
+}
+
+function mobileUserTickets() {
+  return sortByTriage(
+    tickets.filter((ticket) => ticket.documentNumber === mobileUser.documentNumber || ticket.requester === mobileUser.name),
+  );
+}
+
+function renderMobileConsultations() {
+  const container = $("#mobileConsultations");
+  if (!container) return;
+  const items = mobileUserTickets().slice(0, 3);
+  container.innerHTML = items.length
+    ? items
+        .map(
+          (ticket) => `
+            <button type="button" class="mobile-consultation" data-ticket-id="${ticket.id}">
+              <span>
+                <strong>${ticket.title}</strong>
+                <small>${ticket.id} · ${ticket.status}</small>
+              </span>
+              <b class="${ticket.sla.includes("vencido") ? "overdue-time" : "remaining-time"}">${ticket.sla}</b>
+            </button>`,
+        )
+        .join("")
+    : `<div class="mobile-empty">Aun no tienes incidencias creadas.</div>`;
+
+  container.querySelectorAll(".mobile-consultation").forEach((button) => {
+    button.addEventListener("click", () => {
+      selectedId = button.dataset.ticketId;
+      showToast("Consulta seleccionada. En MVP, aqui se abriria el detalle para el cliente.");
+    });
+  });
+}
+
+function renderMobileTicketForm() {
+  const property = mobileProperty();
+  const contract = mobileContract();
+  $("#mobileRequester").textContent = mobileUser.name;
+  $("#mobileRequesterMeta").textContent = `${mobileUser.role} · ${mobileUser.documentType} ${mobileUser.documentNumber}`;
+  $("#mobilePropertySelect").innerHTML = mobileUser.properties
+    .map((item) => `<option value="${item.id}" ${item.id === property.id ? "selected" : ""}>${item.name}</option>`)
+    .join("");
+  $("#mobilePropertyMeta").textContent = `${property.id} · ${property.contracts.length} contrato${property.contracts.length === 1 ? "" : "s"} vinculado${property.contracts.length === 1 ? "" : "s"}`;
+  $("#mobileContractSelect").innerHTML = property.contracts
+    .map((item) => `<option value="${item.id}" ${item.id === contract.id ? "selected" : ""}>${mobileContractOptionLabel(item, property)}</option>`)
+    .join("");
+  $("#mobileContractMeta").textContent = `${contract.id} · ${property.name} · Inicio ${contract.startDate || "s/d"}`;
+  renderMobileAttachmentSummary();
+}
+
+function renderMobileAttachmentSummary() {
+  const labels = [];
+  if (mobileAttachments.has("photo")) labels.push("2 imagenes");
+  if (mobileAttachments.has("video")) labels.push("1 video");
+  $("#mobileAttachmentSummary").textContent = labels.length
+    ? `${labels.join(" + ")} listos para enviar.`
+    : "Puedes adjuntar fotos o videos para acelerar la revision.";
+  document.querySelectorAll(".attachment-toggle").forEach((button) => {
+    button.classList.toggle("selected", mobileAttachments.has(button.dataset.attachment));
+  });
+}
+
+function categoryDefaultPriority(category) {
+  if (category === "Seguridad") return "P1";
+  if (category === "Mantenimiento" || category === "Pagos") return "P2";
+  if (category === "Contrato" || category === "Operacion") return "P3";
+  return "P4";
+}
+
+function nextTicketId() {
+  const next = tickets.reduce((max, ticket) => {
+    const number = Number(ticket.id.replace(/\D/g, ""));
+    return Number.isFinite(number) ? Math.max(max, number) : max;
+  }, 202500000) + 1;
+  return `INC-${String(next).slice(0, 4)}-${String(next).slice(4).padStart(5, "0")}`;
+}
+
+function mobileAttachmentPayload() {
+  const attachments = [];
+  if (mobileAttachments.has("photo")) {
+    attachments.push(
+      { type: "photo", name: "incidencia-app-1.jpg", description: "Foto adjunta desde app", image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80" },
+      { type: "photo", name: "incidencia-app-2.jpg", description: "Detalle adicional", image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=80" },
+    );
+  }
+  if (mobileAttachments.has("video")) {
+    attachments.push({ type: "video", name: "video-incidencia.mp4", description: "Video 0:12" });
+  }
+  return attachments;
+}
+
+function createTicketFromMobileApp() {
+  const property = mobileProperty();
+  const contract = mobileContract();
+  const category = $("#mobileCategorySelect").value;
+  const message = $("#mobileMessage").value.trim();
+  if (!message) {
+    showToast("Agrega un mensaje para crear la incidencia.");
+    return;
+  }
+
+  const priority = categoryDefaultPriority(category);
+  const id = nextTicketId();
+  const newTicket = {
+    id,
+    title: `${category} - ${property.name}`,
+    requester: mobileUser.name,
+    role: mobileUser.role,
+    documentType: mobileUser.documentType,
+    documentNumber: mobileUser.documentNumber,
+    property: property.name,
+    propertyId: property.id,
+    contract: contract.name,
+    contractId: contract.id,
+    channel: "App",
+    created: "Ahora",
+    createdDate: todayIso(),
+    priority,
+    status: "Nuevo",
+    assignee: "Sin asignar",
+    sla: formatSlaMinutes(slaLimits[priority]),
+    category,
+    confidence: 82,
+    summary: `Incidencia creada desde la app por ${mobileUser.name}. Quedo vinculada a ${property.name} y ${contract.name}.`,
+    missing: ["Revision inicial del analista"],
+    next: "Revisar adjuntos, confirmar impacto y asignar responsable.",
+    messages: [
+      [mobileUser.name, message, "Ahora", mobileAttachmentPayload()],
+      ["Sistema / IA", `Ticket clasificado como ${category.toLowerCase()} ${priority} a partir del flujo de app.`, "Ahora"],
+    ],
+  };
+
+  tickets.unshift(newTicket);
+  persistTicketOverride(newTicket);
+  selectedId = id;
+  activeFilter = "total";
+  mobileCreatedTicketId = id;
+  $("#mobileCreatedTicketId").textContent = id;
+  $("#mobileMessage").value = "";
+  mobileAttachments.clear();
+  renderMobileAttachmentSummary();
+  render();
+  showMobileScreen("ticket-success");
+  showToast("Incidencia creada desde la app.");
+}
+
+function priorityClass(priority) {
+  return `priority ${priority.toLowerCase()}`;
+}
+
+function isSlaRisk(ticket) {
+  return ["P1", "P2"].includes(ticket.priority) || ticket.sla.includes("vencido");
+}
+
+function slaMinutes(ticket) {
+  const hours = ticket.sla.match(/(\d+)h/);
+  const minutes = ticket.sla.match(/(\d+)m/);
+  const total = (hours ? Number(hours[1]) * 60 : 0) + (minutes ? Number(minutes[1]) : 0);
+  return ticket.sla.includes("vencido") ? -total : total;
+}
+
+const priorityRank = {
+  P1: 1,
+  P2: 2,
+  P3: 3,
+  P4: 4,
+};
+
+const slaLimits = {
+  P1: 15,
+  P2: 60,
+  P3: 120,
+  P4: 240,
+};
+
+function sortByTriage(items) {
+  return [...items].sort((a, b) => {
+    const priorityDiff = priorityRank[a.priority] - priorityRank[b.priority];
+    if (priorityDiff !== 0) return priorityDiff;
+    return slaMinutes(a) - slaMinutes(b);
+  });
+}
+
+function severityCopy(priority) {
+  if (priority === "P1") return "Critica · Impacto alto";
+  if (priority === "P2") return "Alta · Resolver pronto";
+  if (priority === "P3") return "Media · Seguimiento";
+  return "Baja · Informativa";
+}
+
+const channelIcons = {
+  WhatsApp: "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2264%22%20height%3D%2264%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2218%22%20fill%3D%22%2325d366%22%2F%3E%3Ctext%20x%3D%2232%22%20y%3D%2240%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%22%20font-size%3D%2228%22%20fill%3D%22%23fff%22%20font-weight%3D%22700%22%3EW%3C%2Ftext%3E%3C%2Fsvg%3E",
+  HubSpot: "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2264%22%20height%3D%2264%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2218%22%20fill%3D%22%23ff5c35%22%2F%3E%3Ctext%20x%3D%2232%22%20y%3D%2240%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%22%20font-size%3D%2228%22%20fill%3D%22%23fff%22%20font-weight%3D%22700%22%3EH%3C%2Ftext%3E%3C%2Fsvg%3E",
+  Email: "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2264%22%20height%3D%2264%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2218%22%20fill%3D%22%23ea4335%22%2F%3E%3Ctext%20x%3D%2232%22%20y%3D%2240%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%22%20font-size%3D%2228%22%20fill%3D%22%23fff%22%20font-weight%3D%22700%22%3EM%3C%2Ftext%3E%3C%2Fsvg%3E",
+  App: "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2264%22%20height%3D%2264%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2218%22%20fill%3D%22%232050f6%22%2F%3E%3Ctext%20x%3D%2232%22%20y%3D%2240%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%22%20font-size%3D%2228%22%20fill%3D%22%23fff%22%20font-weight%3D%22700%22%3EP%3C%2Ftext%3E%3C%2Fsvg%3E",
+};
+
+function channelIcon(channel) {
+  return channelIcons[channel] || channelIcons.App;
+}
+
+function channelClass(channel) {
+  return channel.toLowerCase();
+}
+
+function senderEmail(ticket) {
+  if (ticket.email) return ticket.email;
+  const localPart = normalizeSearch(ticket.requester).replace(/\d/g, "");
+  const domain = ticket.role === "Inquilino" ? "gmail.com" : ticket.role === "Proveedor" ? "proveedores.es" : "prophero-investors.com";
+  return `${localPart || "contacto"}@${domain}`;
+}
+
+function messageClass(author) {
+  return author.includes("Maria Gonzalez") || author.includes("Sistema") || author.includes("IA") ? "prophero-message" : "requester-message";
+}
+
+function isAiActivity(author) {
+  return author.includes("IA") || author.includes("Sistema");
+}
+
+function renderMessageDot(author) {
+  if (isAiActivity(author)) {
+    return `<span class="dot ai-dot"><img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2264%22%20height%3D%2264%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2218%22%20fill%3D%22%232050f6%22%2F%3E%3Cpath%20d%3D%22M20%2033c9-2%2013-6%2015-15%202%209%206%2013%2015%2015-9%202-13%206-15%2015-2-9-6-13-15-15z%22%20fill%3D%22%23fff%22%2F%3E%3C%2Fsvg%3E" alt="IA" /></span>`;
+  }
+  return `<span class="dot">${author.slice(0, 1)}</span>`;
+}
+
+function formatSlaMinutes(minutes) {
+  const absolute = Math.abs(minutes);
+  const hours = Math.floor(absolute / 60);
+  const remainingMinutes = absolute % 60;
+  const parts = [];
+  if (hours > 0) parts.push(`${hours}h`);
+  if (remainingMinutes > 0 || !parts.length) parts.push(`${remainingMinutes}m`);
+  return `${parts.join(" ")} ${minutes < 0 ? "vencido" : "restantes"}`;
+}
+
+function inferElapsedMinutes(ticket, previousPriority) {
+  if (ticket.sla === "Dentro de SLA") return Math.round(slaLimits[previousPriority] * 0.35);
+  const currentDelta = slaMinutes(ticket);
+  return currentDelta < 0 ? slaLimits[previousPriority] + Math.abs(currentDelta) : Math.max(0, slaLimits[previousPriority] - currentDelta);
+}
+
+function recalculateSla(ticket, previousPriority, nextPriority) {
+  const elapsed = inferElapsedMinutes(ticket, previousPriority);
+  const nextDelta = slaLimits[nextPriority] - elapsed;
+  return formatSlaMinutes(nextDelta);
+}
+
+function renderAttachments(attachments = []) {
+  if (!attachments.length) return "";
+  return `
+    <div class="attachments">
+      ${attachments
+        .map(
+          (attachment) => `
+          <button class="attachment-thumb ${attachment.type}" type="button" aria-label="${attachment.name}">
+            <span class="attachment-preview" ${attachment.image ? `style="background-image: url('${attachment.image}')"` : ""}>${attachment.type === "video" ? "Play" : ""}</span>
+            <strong>${attachment.name}</strong>
+            <small>${attachment.description}</small>
+          </button>`,
+        )
+        .join("")}
+    </div>`;
+}
+
+function requesterLabel(person) {
+  return `${person.name} · ${person.role} · ${person.documentType} ${person.documentNumber}`;
+}
+
+function propertyLabel(property) {
+  return `${property.name} · ${property.id}`;
+}
+
+function contractLabel(contract) {
+  return `${contract.name} · ${contract.id}`;
+}
+
+function allProperties() {
+  return entityDirectory.flatMap((person) => person.properties);
+}
+
+function allContracts() {
+  return allProperties().flatMap((property) => property.contracts);
+}
+
+function findRequester(value, ticket) {
+  const normalizedValue = normalizeSearch(value);
+  return (
+    entityDirectory.find((person) => requesterLabel(person) === value) ||
+    entityDirectory.find((person) => person.documentNumber === ticket.documentNumber) ||
+    entityDirectory.find((person) => normalizeSearch(requesterLabel(person)).includes(normalizedValue))
+  );
+}
+
+function findProperty(value, requester) {
+  const properties = requester ? requester.properties : allProperties();
+  const normalizedValue = normalizeSearch(value);
+  return properties.find((property) => propertyLabel(property) === value) || properties.find((property) => normalizeSearch(propertyLabel(property)).includes(normalizedValue));
+}
+
+function findContract(value, property, requester) {
+  const contracts = property ? property.contracts : requester ? requester.properties.flatMap((item) => item.contracts) : allContracts();
+  const normalizedValue = normalizeSearch(value);
+  return contracts.find((contract) => contractLabel(contract) === value) || contracts.find((contract) => normalizeSearch(contractLabel(contract)).includes(normalizedValue));
+}
+
+function currentDirectoryMatch(ticket) {
+  const requester = entityDirectory.find((person) => person.documentNumber === ticket.documentNumber) || entityDirectory.find((person) => person.name === ticket.requester);
+  const properties = requester ? requester.properties : allProperties();
+  const property = properties.find((item) => item.id === ticket.propertyId) || properties.find((item) => item.name === ticket.property);
+  const contract = findContract(`${ticket.contract} · ${ticket.contractId}`, property, requester);
+  return { requester, property, contract };
+}
+
+function entityOptionButton(value, meta, type) {
+  return `
+    <button class="entity-option" type="button" data-type="${type}" data-value="${value}" onclick="window.selectEntity(this.dataset.type, this.dataset.value)">
+      <strong>${value}</strong>
+      <small>${meta}</small>
+    </button>`;
+}
+
+function matchingQuery(value, query) {
+  return !query || normalizeSearch(value).includes(normalizeSearch(query));
+}
+
+function entityOptions(type, query = "") {
+  const ticket = tickets.find((item) => item.id === selectedId);
+  const { requester, property } = currentDirectoryMatch(ticket);
+  if (type === "requester") {
+    return entityDirectory
+      .map((person) => ({
+        value: requesterLabel(person),
+        meta: `${person.properties.length} propiedad${person.properties.length === 1 ? "" : "es"} vinculada${person.properties.length === 1 ? "" : "s"}`,
+      }))
+      .filter((option) => matchingQuery(`${option.value} ${option.meta}`, query));
+  }
+  if (type === "property") {
+    const properties = requester ? requester.properties : allProperties();
+    return properties
+      .map((item) => ({
+        value: propertyLabel(item),
+        meta: requester ? `Propiedad de ${requester.name}` : "Propiedad disponible",
+      }))
+      .filter((option) => matchingQuery(`${option.value} ${option.meta}`, query));
+  }
+  const contracts = property ? property.contracts : requester ? requester.properties.flatMap((item) => item.contracts) : allContracts();
+  return contracts
+    .map((contract) => ({
+      value: contractLabel(contract),
+      meta: property ? `Contrato de ${property.name}` : requester ? `Contrato vinculado a ${requester.name}` : "Contrato disponible",
+    }))
+    .filter((option) => matchingQuery(`${option.value} ${option.meta}`, query));
+}
+
+function closeEntityOptions() {
+  document.querySelectorAll(".entity-options").forEach((menu) => menu.classList.remove("open"));
+}
+
+function renderEntityMenu(type, query = "") {
+  const menu = $(`#${type}Options`);
+  const options = entityOptions(type, query);
+  menu.innerHTML = options.length
+    ? options.map((option) => entityOptionButton(option.value, option.meta, type)).join("")
+    : `<div class="entity-option-empty">Sin resultados relacionados.</div>`;
+  menu.classList.add("open");
+}
+
+function renderEntityOptions(ticket) {
+  ["requester", "property", "contract"].forEach((type) => {
+    const menu = $(`#${type}Options`);
+    const options = entityOptions(type);
+    menu.innerHTML = options.length
+      ? options.map((option) => entityOptionButton(option.value, option.meta, type)).join("")
+      : `<div class="entity-option-empty">Sin resultados relacionados.</div>`;
+  });
+}
+
+function normalizeSearch(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
+}
+
+function getFilteredTickets() {
+  const priority = $("#priorityFilter").value;
+  const search = $("#searchInput").value.trim().toLowerCase();
+  const normalizedSearch = normalizeSearch(search);
+  const dateFrom = $("#dateFrom").value;
+  const dateTo = $("#dateTo").value;
+  return tickets.filter((ticket) => {
+    const navMatch =
+      (activeFilter === "total" && !["Resuelto", "Cerrado"].includes(ticket.status)) ||
+      (activeFilter === "mine" && ticket.assignee === "Maria Gonzalez" && !["Resuelto", "Cerrado"].includes(ticket.status)) ||
+      (activeFilter === "new" && ticket.status === "Nuevo") ||
+      (activeFilter === "assigned" && ticket.status === "Abierto / Asignado") ||
+      (activeFilter === "progress" && ticket.status === "En progreso") ||
+      (activeFilter === "pending" && ticket.status === "Pendiente / En espera") ||
+      (activeFilter === "resolved" && ticket.status === "Resuelto") ||
+      (activeFilter === "closed" && ticket.status === "Cerrado");
+    const priorityMatch = priority === "all" || ticket.priority === priority;
+    const searchableFields = [
+      ticket.title,
+      ticket.requester,
+      ticket.role,
+      ticket.property,
+      ticket.propertyId,
+      ticket.contract,
+      ticket.contractId,
+      ticket.id,
+      ticket.documentType,
+      ticket.documentNumber,
+      ticket.channel,
+      ticket.category,
+    ];
+    const searchMatch =
+      !search ||
+      searchableFields.some((value) => value.toLowerCase().includes(search) || normalizeSearch(value).includes(normalizedSearch));
+    const fromMatch = !dateFrom || ticket.createdDate >= dateFrom;
+    const toMatch = !dateTo || ticket.createdDate <= dateTo;
+    return navMatch && priorityMatch && searchMatch && fromMatch && toMatch;
+  });
+}
+
+function renderList() {
+  const list = $("#ticketList");
+  const withinList = $("#withinSlaList");
+  const filtered = getFilteredTickets();
+  const riskTickets = sortByTriage(filtered.filter(isSlaRisk));
+  const withinTickets = sortByTriage(filtered.filter((ticket) => !isSlaRisk(ticket)));
+  const sortedTickets = [...riskTickets, ...withinTickets];
+
+  if (filtered.length && !filtered.some((ticket) => ticket.id === selectedId)) {
+    selectedId = sortedTickets[0].id;
+  }
+
+  const ticketRows = (items) => items
+    .map(
+      (ticket) => `
+      <button class="ticket-row ${ticket.id === selectedId ? "selected" : ""} ${ticket.sla.includes("vencido") ? "sla-overdue" : ""}" data-id="${ticket.id}">
+        <div class="channel ${channelClass(ticket.channel)}">
+          <img src="${channelIcon(ticket.channel)}" alt="${ticket.channel}" />
+        </div>
+        <div class="ticket-copy">
+          <strong>${ticket.title}</strong>
+          <span>${ticket.property}</span>
+          <small>${ticket.requester}</small>
+        </div>
+        <div class="ticket-meta">
+          <span class="${priorityClass(ticket.priority)}">${ticket.priority}</span>
+          <strong class="${ticket.sla.includes("vencido") ? "overdue-time" : "remaining-time"}">${ticket.sla}</strong>
+        </div>
+      </button>`,
+    )
+    .join("");
+
+  list.innerHTML = ticketRows(riskTickets);
+  withinList.innerHTML = ticketRows(withinTickets);
+
+  if (!filtered.length) {
+    list.innerHTML = `<div class="empty">No hay incidencias para este filtro.</div>`;
+    withinList.innerHTML = "";
+  } else {
+    if (!riskTickets.length) list.innerHTML = `<div class="empty">Sin tickets en riesgo.</div>`;
+    if (!withinTickets.length) withinList.innerHTML = `<div class="empty">Sin tickets dentro de SLA.</div>`;
+  }
+
+  document.querySelectorAll(".ticket-row").forEach((button) => {
+    button.addEventListener("click", () => {
+      selectedId = button.dataset.id;
+      render();
+    });
+  });
+}
+
+function renderTicket(ticket) {
+  $("#ticketId").textContent = ticket.id;
+  $("#ticketPriorityChip").textContent = ticket.priority;
+  $("#ticketPriorityChip").className = `${priorityClass(ticket.priority)} detail-priority`;
+  $("#ticketSlaChip").textContent = ticket.sla.includes("vencido") ? "SLA vencido" : "Dentro de SLA";
+  $("#ticketSlaChip").className = ticket.sla.includes("vencido") ? "sla-chip overdue" : "sla-chip ok";
+  $("#titleSla").textContent = ticket.sla;
+  $("#ticketTitle").textContent = ticket.title;
+  $("#requesterName").textContent = ticket.requester;
+  $("#propertyName").textContent = ticket.property;
+  $("#contractType").textContent = ticket.contract;
+  $("#propertyId").textContent = ticket.propertyId;
+  $("#contractId").textContent = ticket.contractId;
+  $("#requesterRole").textContent = `${ticket.role} · ${ticket.documentType} ${ticket.documentNumber}`;
+  renderEntityOptions(ticket);
+  $("#sourceChannel").textContent = ticket.channel;
+  $("#sourceChannelIcon").src = channelIcon(ticket.channel);
+  $("#sourceChannelIcon").alt = ticket.channel;
+  $("#sourceChannelIcon").className = `channel-icon ${channelClass(ticket.channel)}`;
+  $("#createdAt").textContent = ticket.channel === "Email" ? `${senderEmail(ticket)} · ${ticket.created}` : ticket.created;
+  $("#confidence").textContent = `${ticket.confidence}%`;
+  $("#aiSummary").textContent = ticket.summary;
+  $("#aiCategory").textContent = ticket.category;
+  $("#aiPriority").textContent = ticket.priority;
+  $("#aiSeverityCopy").textContent = severityCopy(ticket.priority);
+  $("#nextAction").textContent = ticket.next;
+  $("#missingList").innerHTML = ticket.missing.map((item) => `<li>${item}</li>`).join("");
+
+  $("#statusSelect").innerHTML = statuses
+    .map((status) => `<option ${status === ticket.status ? "selected" : ""}>${status}</option>`)
+    .join("");
+  $("#assigneeSelect").innerHTML = assignees
+    .map((assignee) => `<option ${assignee === ticket.assignee ? "selected" : ""}>${assignee}</option>`)
+    .join("");
+  $("#prioritySelect").innerHTML = priorities
+    .map((priority) => `<option ${priority === ticket.priority ? "selected" : ""}>${priority}</option>`)
+    .join("");
+  $("#categorySelect").innerHTML = categories
+    .map((category) => `<option ${category === ticket.category ? "selected" : ""}>${category}</option>`)
+    .join("");
+  const assignedToMe = ticket.assignee === "Maria Gonzalez";
+  $("#assignToMeBtn").textContent = assignedToMe ? "Asignado a ti" : "Asignarme ticket";
+  $("#assignToMeBtn").disabled = assignedToMe;
+  $("#assignToMeBtn").className = assignedToMe ? "assigned-lock" : "primary";
+
+  $("#timeline").innerHTML = ticket.messages
+    .map(
+      ([author, body, time, attachments]) => `
+      <article class="timeline-item ${messageClass(author)}">
+        ${renderMessageDot(author)}
+        <div>
+          <header><strong>${author}</strong><small>${time}</small></header>
+          <p>${body}</p>
+          ${renderAttachments(attachments)}
+        </div>
+      </article>`,
+    )
+    .join("");
+}
+
+function renderMetrics() {
+  const nonClosed = tickets.filter((ticket) => ticket.status !== "Cerrado");
+  const open = tickets.filter((ticket) => !["Resuelto", "Cerrado"].includes(ticket.status)).length;
+  const p1 = nonClosed.filter((ticket) => ticket.priority === "P1").length;
+  const p2 = nonClosed.filter((ticket) => ticket.priority === "P2").length;
+  const p3 = nonClosed.filter((ticket) => ticket.priority === "P3").length;
+  const p4 = nonClosed.filter((ticket) => ticket.priority === "P4").length;
+  const waiting = tickets.filter((ticket) => ticket.status === "Pendiente / En espera").length;
+  const resolved = tickets.filter((ticket) => ticket.status === "Resuelto").length;
+  const closed = tickets.filter((ticket) => ticket.status === "Cerrado").length;
+  const mine = tickets.filter((ticket) => ticket.assignee === "Maria Gonzalez" && !["Resuelto", "Cerrado"].includes(ticket.status)).length;
+  const newTickets = tickets.filter((ticket) => ticket.status === "Nuevo").length;
+  const assigned = tickets.filter((ticket) => ticket.status === "Abierto / Asignado").length;
+  const progress = tickets.filter((ticket) => ticket.status === "En progreso").length;
+  const p1Overdue = nonClosed.filter((ticket) => ticket.priority === "P1" && ticket.sla.includes("vencido")).length;
+  const p2Overdue = nonClosed.filter((ticket) => ticket.priority === "P2" && ticket.sla.includes("vencido")).length;
+  const p3Overdue = nonClosed.filter((ticket) => ticket.priority === "P3" && ticket.sla.includes("vencido")).length;
+  const p4Overdue = nonClosed.filter((ticket) => ticket.priority === "P4" && ticket.sla.includes("vencido")).length;
+  const p2AtRisk = nonClosed.filter((ticket) => ticket.priority === "P2" && !ticket.sla.includes("vencido")).length;
+
+  $("#metricOpen").textContent = open;
+  $("#metricP1").textContent = p1;
+  $("#metricP2").textContent = p2;
+  $("#metricP3").textContent = p3;
+  $("#metricP4").textContent = p4;
+  $("#metricOpenNote").textContent = "+2 vs ayer";
+  $("#metricP1Note").textContent = `${p1Overdue} vencido${p1Overdue === 1 ? "" : "s"}`;
+  $("#metricP2Note").textContent = p2Overdue > 0 ? `${p2Overdue} vencido${p2Overdue === 1 ? "" : "s"}` : `${p2AtRisk} por vencer`;
+  $("#metricP3Note").textContent = p3Overdue > 0 ? `${p3Overdue} vencido${p3Overdue === 1 ? "" : "s"}` : "Dentro de SLA";
+  $("#metricP4Note").textContent = p4Overdue > 0 ? `${p4Overdue} vencido${p4Overdue === 1 ? "" : "s"}` : "Dentro de SLA";
+  $("#metricP1").closest("article").classList.toggle("metric-overdue", p1Overdue > 0);
+  $("#metricP2").closest("article").classList.toggle("metric-overdue", p2Overdue > 0);
+  $("#metricP3").closest("article").classList.toggle("metric-overdue", p3Overdue > 0);
+  $("#metricP4").closest("article").classList.toggle("metric-overdue", p4Overdue > 0);
+
+  $("#navAll").textContent = open;
+  $("#navMine").textContent = mine;
+  $("#navNew").textContent = newTickets;
+  $("#navAssigned").textContent = assigned;
+  $("#navProgress").textContent = progress;
+  $("#navPending").textContent = waiting;
+  $("#navResolved").textContent = resolved;
+  $("#navClosed").textContent = closed;
+}
+
+function render() {
+  renderList();
+  const selected = tickets.find((ticket) => ticket.id === selectedId) || getFilteredTickets()[0] || tickets[0];
+  renderTicket(selected);
+  renderMetrics();
+}
+
+document.querySelectorAll(".side-nav button").forEach((button) => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".side-nav button, .app-access").forEach((item) => item.classList.remove("active"));
+    button.classList.add("active");
+    activeFilter = button.dataset.filter;
+    showBackoffice();
+  });
+});
+
+document.querySelector(".app-access").addEventListener("click", (event) => {
+  event.preventDefault();
+  event.stopPropagation();
+  document.querySelectorAll(".side-nav button, .app-access").forEach((item) => item.classList.remove("active"));
+  event.currentTarget.classList.add("active");
+  showMobileApp("home");
+});
+
+document.querySelectorAll("[data-mobile-target]").forEach((button) => {
+  button.addEventListener("click", () => showMobileScreen(button.dataset.mobileTarget));
+});
+
+$("#mobilePropertySelect").addEventListener("change", (event) => {
+  mobilePropertyId = event.target.value;
+  mobileContractId = mobileProperty().contracts[0].id;
+  renderMobileTicketForm();
+});
+
+$("#mobileContractSelect").addEventListener("change", (event) => {
+  mobileContractId = event.target.value;
+  renderMobileTicketForm();
+});
+
+document.querySelectorAll(".attachment-toggle").forEach((button) => {
+  button.addEventListener("click", () => {
+    const type = button.dataset.attachment;
+    if (mobileAttachments.has(type)) mobileAttachments.delete(type);
+    else mobileAttachments.add(type);
+    renderMobileAttachmentSummary();
+  });
+});
+
+$("#mobileTicketForm").addEventListener("submit", (event) => {
+  event.preventDefault();
+  createTicketFromMobileApp();
+});
+
+$("#priorityFilter").addEventListener("change", renderList);
+$("#searchInput").addEventListener("input", renderList);
+$("#dateFrom").addEventListener("change", renderList);
+$("#dateTo").addEventListener("change", renderList);
+
+$("#statusSelect").addEventListener("change", (event) => {
+  const ticket = tickets.find((item) => item.id === selectedId);
+  ticket.status = event.target.value;
+  ticket.messages.push(["Maria Gonzalez", `Actualizo el estado a ${ticket.status}.`, "Ahora"]);
+  persistTickets();
+  render();
+  showToast("Estado actualizado y registrado en auditoria.");
+});
+
+$("#assigneeSelect").addEventListener("change", (event) => {
+  const ticket = tickets.find((item) => item.id === selectedId);
+  ticket.assignee = event.target.value;
+  ticket.messages.push(["Maria Gonzalez", `Actualizo el responsable a ${ticket.assignee}.`, "Ahora"]);
+  persistTickets();
+  render();
+  showToast("Responsable actualizado.");
+});
+
+$("#prioritySelect").addEventListener("change", (event) => {
+  const ticket = tickets.find((item) => item.id === selectedId);
+  const previousPriority = ticket.priority;
+  ticket.priority = event.target.value;
+  ticket.sla = recalculateSla(ticket, previousPriority, ticket.priority);
+  ticket.messages.push(["Maria Gonzalez", `Actualizo la prioridad de ${previousPriority} a ${ticket.priority}. SLA recalculado: ${ticket.sla}.`, "Ahora"]);
+  persistTickets();
+  render();
+  showToast("Prioridad actualizada.");
+});
+
+$("#categorySelect").addEventListener("change", (event) => {
+  const ticket = tickets.find((item) => item.id === selectedId);
+  ticket.category = event.target.value;
+  ticket.messages.push(["Maria Gonzalez", `Actualizo la categoria a ${ticket.category}.`, "Ahora"]);
+  persistTickets();
+  render();
+  showToast("Categoria actualizada.");
+});
+
+function selectRequester(value) {
+  const ticket = tickets.find((item) => item.id === selectedId);
+  const person = findRequester(value, ticket);
+  if (!person) {
+    renderEntityOptions(ticket);
+    return;
+  }
+  ticket.requester = person.name;
+  ticket.role = person.role;
+  ticket.documentType = person.documentType;
+  ticket.documentNumber = person.documentNumber;
+  const currentProperty = person.properties.find((property) => property.id === ticket.propertyId);
+  const property = currentProperty || person.properties[0];
+  const contract = property.contracts.find((item) => item.id === ticket.contractId) || property.contracts[0];
+  ticket.property = property.name;
+  ticket.propertyId = property.id;
+  ticket.contract = contract.name;
+  ticket.contractId = contract.id;
+  ticket.messages.push(["Maria Gonzalez", `Vinculo el solicitante a ${requesterLabel(person)}.`, "Ahora"]);
+  persistTickets();
+  render();
+  showToast("Solicitante y relaciones actualizadas.");
+}
+
+function selectProperty(value) {
+  const ticket = tickets.find((item) => item.id === selectedId);
+  const { requester } = currentDirectoryMatch(ticket);
+  const property = findProperty(value, requester);
+  if (!property) {
+    renderEntityOptions(ticket);
+    return;
+  }
+  const contract = property.contracts.find((item) => item.id === ticket.contractId) || property.contracts[0];
+  ticket.property = property.name;
+  ticket.propertyId = property.id;
+  ticket.contract = contract.name;
+  ticket.contractId = contract.id;
+  ticket.messages.push(["Maria Gonzalez", `Vinculo la propiedad a ${propertyLabel(property)}.`, "Ahora"]);
+  persistTickets();
+  render();
+  showToast("Propiedad actualizada.");
+}
+
+function selectContract(value) {
+  const ticket = tickets.find((item) => item.id === selectedId);
+  const { requester, property } = currentDirectoryMatch(ticket);
+  const contract = findContract(value, property, requester);
+  if (!contract) {
+    renderEntityOptions(ticket);
+    return;
+  }
+  ticket.contract = contract.name;
+  ticket.contractId = contract.id;
+  ticket.messages.push(["Maria Gonzalez", `Vinculo el contrato a ${contractLabel(contract)}.`, "Ahora"]);
+  persistTickets();
+  render();
+  showToast("Contrato actualizado.");
+}
+
+function selectEntity(type, value) {
+  if (type === "requester") selectRequester(value);
+  if (type === "property") selectProperty(value);
+  if (type === "contract") selectContract(value);
+}
+
+window.selectEntity = selectEntity;
+
+document.addEventListener(
+  "mousedown",
+  (event) => {
+    const trigger = event.target.closest(".entity-trigger");
+    if (!trigger) return;
+    event.preventDefault();
+    event.stopPropagation();
+    const type = trigger.dataset.type;
+    const menu = $(`#${type}Options`);
+    const isOpen = menu.classList.contains("open");
+    closeEntityOptions();
+    if (!isOpen) renderEntityMenu(type);
+  },
+  true,
+);
+
+document.querySelectorAll(".entity-options").forEach((menu) => {
+  menu.addEventListener("mousedown", (event) => {
+    const option = event.target.closest(".entity-option");
+    if (!option) return;
+    event.preventDefault();
+    closeEntityOptions();
+    selectEntity(option.dataset.type, option.dataset.value);
+  });
+});
+
+document.addEventListener("mousedown", (event) => {
+  if (event.target.closest(".entity-picker")) return;
+  closeEntityOptions();
+});
+
+$("#assignToMeBtn").addEventListener("click", () => {
+  const ticket = tickets.find((item) => item.id === selectedId);
+  if (ticket.assignee === "Maria Gonzalez") return;
+  ticket.assignee = "Maria Gonzalez";
+  if (ticket.status === "Nuevo") ticket.status = "Abierto / Asignado";
+  ticket.messages.push(["Maria Gonzalez", "Se asigno este ticket.", "Ahora"]);
+  persistTickets();
+  render();
+  showToast("Ticket asignado a ti.");
+});
+
+$("#replyForm").addEventListener("submit", (event) => {
+  event.preventDefault();
+  const input = $("#replyInput");
+  if (!input.value.trim()) return;
+  const ticket = tickets.find((item) => item.id === selectedId);
+  ticket.messages.push(["Maria Gonzalez", input.value.trim(), "Ahora"]);
+  input.value = "";
+  persistTickets();
+  render();
+  showToast("Respuesta enviada por el canal de origen.");
+});
+
+$("#dateTo").value = todayIso();
+
+hydrateStoredTickets().finally(render);
+
+    </script>
+  </body>
+</html>
