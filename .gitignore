@@ -1,0 +1,36 @@
+dist/
+node_modules/
+.npm-cache/
+.vite/
+coverage/
+
+# Environment files and local configuration
+.env
+.env.*
+*.local
+.npmrc
+.netrc
+
+# Credentials, keys, and certificates
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+credentials.json
+service-account*.json
+secrets*.json
+
+# Operating system and editor files
+.DS_Store
+.idea/
+.vscode/
+
+# Deployment and agent-local files
+.vercel/
+AGENTS.md
+design-qa.md
+.runtime/
+prophero-centro-incidencias-standalone.html
+*Standalone*.html
+start-prototype.command
